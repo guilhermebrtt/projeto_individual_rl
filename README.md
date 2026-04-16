@@ -1,4 +1,4 @@
-# 🚀 Projeto Pessoal: Universo Rocket League
+# 🚀 Projeto Pessoal: Rocket League
 
 Bem-vindo ao meu repositório dedicado a uma das minhas maiores paixões: **Rocket League**. 
 Este projeto foi criado para compartilhar meu conhecimento e paixão por este jogo único.
