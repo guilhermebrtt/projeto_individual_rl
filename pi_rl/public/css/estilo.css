@@ -6,6 +6,11 @@ body {
   font-family: 'Barlow', 'Segoe UI', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+body::selection{
+  background-color: blue;
+  color: white;
+}
+
 :root {
   --tamanho-header: 80px;
   --tamanho-banner: calc(100vh - var(--tamanho-header) - var(--tamanho-footer) - 2px);
@@ -15,8 +20,14 @@ body {
 }
 
 .logo {
-  height: 100px;
+  height: 70px;
   width: auto;
+  transition: 500ms;
+}
+
+.logo:hover{
+  transform: scale(1.1);
+  transition-duration: 500ms;
 }
 
 .header {
@@ -25,8 +36,11 @@ body {
   align-items: center;
   background: #080000;
   background: linear-gradient(90deg,rgba(8, 0, 0, 1) 0%, rgba(29, 53, 122, 1) 51%, rgba(22, 40, 158, 1) 100%);
-  height: 120px;
+  height: 80px;
   padding: 0px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 999;
 }
 .container {
   display: flex;
@@ -66,6 +80,16 @@ nav ul li a:hover {
   margin-top: 50px;
 }
 
+.header_box1 span{
+  transition: 500ms;
+}
+
+.header_box1 span:hover{
+  transform: scale(1.1);
+  transition-duration: 500ms;
+  color: rgb(12, 68, 141);
+}
+
 .box1 h1 {
   font-size: 64px;
   color: #333;
@@ -83,7 +107,7 @@ nav ul li a:hover {
   flex-direction: row;
   justify-content: space-between;
   align-items: space-between;
-  margin: 200px 5%;
+  margin: 100px 5%;
 }
 
 .content_box1 p {
@@ -95,12 +119,26 @@ nav ul li a:hover {
 
 .content_box1 p b{
   font-size: 36px;
+  transition: 500ms;
+}
+
+.content_box1 p b span:hover{
+  transform: scale(1.5);
+  transition-duration: 500ms;
+  color: rgb(12, 68, 141);
 }
 
 .content_box1 img {
   width: 50%;
   height: auto;
   border-radius: 15px;
+  transition: 500ms;
+}
+
+.content_box1 img:hover{
+  transform: scale(1.05);
+  transition-duration: 500ms;
+  box-shadow: 0 3px 6px rgb(10, 37, 190);
 }
 
 .box2 {
@@ -127,7 +165,6 @@ nav ul li a:hover {
   flex-direction: row;
   justify-content: space-around;
   align-items: top;
-  margin: 50px 0px;
 }
 
 .box2 img {
@@ -142,7 +179,7 @@ nav ul li a:hover {
   justify-content: space-around;
   align-items: center;
   margin: 50px 0px;
-  border: 4px solid white;
+  box-shadow: 1px 1px 5px 1px rgb(0, 0, 0);
   border-radius: 10px;
   width: 25%;
   padding: 25px;
@@ -155,42 +192,23 @@ nav ul li a:hover {
   width: 80%;
 }
 
-.section2_box2 {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  margin: 50px 0px;
-  border: 4px solid white;
-  border-radius: 10px;
-  width: 25%;
-  padding: 25px;
-}
-
-.section2_box2 p {
-  font-size: 24px;
+.next_page{
+  width: 20%;
+  font-size: 32px;
+  background: rgb(24, 77, 237, 1);
   color: white;
-  margin: 0;
-  width: 80%;
-}
-
-.section3_box2 {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  margin: 50px 0px;
-  border: 4px solid white;
-  border-radius: 10px;
-  width: 25%;
+  border-radius: 5px;
   padding: 10px;
+  border: 1px solid black;
+  transition: 1s;
 }
 
-.section3_box2 p {
-  font-size: 24px;
-  color: white;
-  margin: 0;
-  width: 80%;
+.next_page:hover{
+   transition-duration: 1s;
+   transform: scale(1.5) rotate(-5deg);
+   color: rgb(24, 77, 237, 1);
+   background-color: white;
+   border: none
 }
 
 .footer {
