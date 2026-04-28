@@ -218,3 +218,72 @@ nav ul li a:hover {
   background: #080000;
   color: white;
 }
+
+.login{ 
+  display: flex;
+  color: white;
+  background-color: #080000;
+  background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),url('../assets/imgs/background_rocket.gif') ;
+  background-size: cover;
+  background-position: center; 
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
+.login .container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-login{
+  background-color: rgb(3, 3, 20);
+  padding: 100px 200px;
+  border-radius: 15px;
+  text-align: center;
+}
+
+.card-login h2{
+  font-size: 40px;
+  margin-top: 0;
+}
+
+.formulario{
+  width:  400px;
+}
+
+.card-login .campo{
+  text-align: start;
+}
+
+.card-login input{
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 0;
+}
+
+.card-login button{
+  border: 0;
+  margin: 10px;
+  padding: 10px 30px;
+  border-radius: 5px;
+  background-color: rgb(47, 47, 184);
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.ref-cadastro{
+  color: white;
+}
+
+.exit{
+  position: absolute;
+  text-decoration: none;
+  color: white;
+  font-size: 32px;
+  top: 30px;
+  left: 30px;
+  transform: scaleX(-1);
+}
