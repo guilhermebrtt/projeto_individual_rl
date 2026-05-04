@@ -6,7 +6,7 @@ body {
   font-family: 'Barlow', 'Segoe UI', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body::selection{
+body::selection {
   background-color: blue;
   color: white;
 }
@@ -25,7 +25,7 @@ body::selection{
   transition: 500ms;
 }
 
-.logo:hover{
+.logo:hover {
   transform: scale(1.1);
   transition-duration: 500ms;
 }
@@ -35,19 +35,21 @@ body::selection{
   justify-content: space-between;
   align-items: center;
   background: #080000;
-  background: linear-gradient(90deg,rgba(8, 0, 0, 1) 0%, rgba(29, 53, 122, 1) 51%, rgba(22, 40, 158, 1) 100%);
+  background: linear-gradient(90deg, rgba(8, 0, 0, 1) 0%, rgba(29, 53, 122, 1) 51%, rgba(22, 40, 158, 1) 100%);
   height: 80px;
   padding: 0px 20px;
   position: sticky;
   top: 0;
   z-index: 999;
 }
+
 .container {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
 }
+
 nav ul {
   list-style: none;
   display: flex;
@@ -80,11 +82,11 @@ nav ul li a:hover {
   margin-top: 50px;
 }
 
-.header_box1 span{
+.header_box1 span {
   transition: 500ms;
 }
 
-.header_box1 span:hover{
+.header_box1 span:hover {
   transform: scale(1.1);
   transition-duration: 500ms;
   color: rgb(12, 68, 141);
@@ -117,12 +119,12 @@ nav ul li a:hover {
   width: 55%;
 }
 
-.content_box1 p b{
+.content_box1 p b {
   font-size: 36px;
   transition: 500ms;
 }
 
-.content_box1 p b span:hover{
+.content_box1 p b span:hover {
   transform: scale(1.5);
   transition-duration: 500ms;
   color: rgb(12, 68, 141);
@@ -135,7 +137,7 @@ nav ul li a:hover {
   transition: 500ms;
 }
 
-.content_box1 img:hover{
+.content_box1 img:hover {
   transform: scale(1.05);
   transition-duration: 500ms;
   box-shadow: 0 3px 6px rgb(10, 37, 190);
@@ -149,10 +151,10 @@ nav ul li a:hover {
   text-align: center;
   color: white;
   padding: 30px;
-  background: linear-gradient(90deg,rgba(44, 123, 201, 1) 0%, rgba(24, 77, 237, 1) 51%, rgba(22, 40, 158, 1) 100%);
+  background: linear-gradient(90deg, rgba(44, 123, 201, 1) 0%, rgba(24, 77, 237, 1) 51%, rgba(22, 40, 158, 1) 100%);
 }
 
-.box2 .header_box2 p{
+.box2 .header_box2 p {
   font-size: 24px;
   color: white;
   margin-top: 20px;
@@ -192,7 +194,7 @@ nav ul li a:hover {
   width: 80%;
 }
 
-.next_page{
+.next_page {
   width: 20%;
   font-size: 32px;
   background: rgb(24, 77, 237, 1);
@@ -203,12 +205,12 @@ nav ul li a:hover {
   transition: 1s;
 }
 
-.next_page:hover{
-   transition-duration: 1s;
-   transform: scale(1.5) rotate(-5deg);
-   color: rgb(24, 77, 237, 1);
-   background-color: white;
-   border: none
+.next_page:hover {
+  transition-duration: 1s;
+  transform: scale(1.5) rotate(-5deg);
+  color: rgb(24, 77, 237, 1);
+  background-color: white;
+  border: none
 }
 
 .footer {
@@ -219,55 +221,55 @@ nav ul li a:hover {
   color: white;
 }
 
-.login{ 
+.login {
   display: flex;
   color: white;
   background-color: #080000;
-  background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),url('../assets/imgs/background_rocket.gif') ;
+  background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('../assets/imgs/background_rocket.gif');
   background-size: cover;
-  background-position: center; 
+  background-position: center;
   background-repeat: no-repeat;
   min-height: 100vh;
 }
 
-.login .container{
+.login .container {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-#mensagem_erro{
+#mensagem_erro {
   color: red;
 }
 
-.card-login{
+.card-login {
   background-color: rgb(3, 3, 20);
   padding: 50px 100px;
   border-radius: 15px;
   text-align: center;
 }
 
-.card-login h2{
+.card-login h2 {
   font-size: 40px;
   margin-top: 0;
 }
 
-.formulario{
-  width:  400px;
+.formulario {
+  width: 400px;
 }
 
-.card-login .campo{
+.card-login .campo {
   text-align: start;
 }
 
-.card-login input{
+.card-login input {
   width: 100%;
   padding: 10px;
   border-radius: 5px;
   border: 0;
 }
 
-.card-login button{
+.card-login button {
   border: 0;
   margin: 10px;
   padding: 10px 30px;
@@ -278,11 +280,11 @@ nav ul li a:hover {
   font-weight: bold;
 }
 
-.ref-cadastro{
+.ref-cadastro {
   color: white;
 }
 
-.exit{
+.exit {
   position: absolute;
   text-decoration: none;
   color: white;
@@ -292,3 +294,42 @@ nav ul li a:hover {
   transform: scaleX(-1);
 }
 
+.box1_content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.box1_content h2 {
+  font-size: 64px;
+  margin-left: 50px;
+  color:#333;
+}
+
+.span_azul:hover {
+  color: rgb(12, 68, 141);
+  transform: scale(1.5);
+  transition-duration: 500ms;
+}
+
+.span_vermelho:hover {
+  color: rgb(184, 6, 6);
+  transform: scale(1.5);
+  transition-duration: 500ms;
+}
+
+.section1_box1_content {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.section1_box1_content img {
+  width: 40%;
+}
+
+.section1_box1_content p {
+  width: 50%;
+  font-size: 32px;
+  color:#555;
+}
