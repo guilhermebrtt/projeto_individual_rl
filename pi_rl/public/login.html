@@ -36,7 +36,6 @@
             </div>
             <button class="botao" onclick="entrar()">Entrar</button>
           </div>
-
           <div id="div_erros_login"></div>
           <a href="./cadastro.html" class="ref-cadastro"
             >Ainda não é Cadastrado?</a
@@ -49,15 +48,12 @@
 
 <script>
   function entrar() {
-    aguardar();
-
     var emailVar = email_input.value;
     var senhaVar = senha_input.value;
 
     if (emailVar == "" || senhaVar == "") {
       cardErro.style.display = "block";
-      mensagem_erro.innerHTML =
-        "(Mensagem de erro para todos os campos em branco)";
+      mensagem_erro.innerHTML = "Todos os campos estão em branco";
       finalizarAguardar();
       return false;
     } else {
@@ -89,10 +85,7 @@
             sessionStorage.EMAIL_USUARIO = json.email;
             sessionStorage.NOME_USUARIO = json.nome;
             sessionStorage.ID_USUARIO = json.id;
-
-            setTimeout(function () {
-              window.location = "./quiz.html";
-            }, 1000);
+            window.location = "quiz.html";
           });
         } else {
           console.log("Houve um erro ao tentar realizar o login!");
