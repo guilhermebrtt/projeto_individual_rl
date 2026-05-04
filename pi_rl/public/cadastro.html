@@ -18,7 +18,6 @@
     <div class="login">
       <div class="alerta_erro">
         <div class="card_erro" id="cardErro">
-          <span id="mensagem_erro"></span>
         </div>
       </div>
       <div class="container">
@@ -52,8 +51,7 @@
             </div>
             <button class="botao" onclick="cadastrar()">Cadastrar</button>
           </div>
-
-          <div id="div_erros_login"></div>
+          <div id="mensagem_erro"></div>
           <a href="./login.html" class="ref-cadastro">Já sou Cadastrado!</a>
         </div>
       </div>
@@ -84,7 +82,7 @@
     ) {
       cardErro.style.display = "block";
       mensagem_erro.innerHTML =
-        "(Mensagem de erro para todos os campos em branco)";
+        "*Você deixou campos em branco";
 
       finalizarAguardar();
       return false;
