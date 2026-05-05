@@ -10,15 +10,14 @@
     <script src="./js/sessao.js"></script>
 
     <link rel="stylesheet" href="./css/estilo.css" />
-    <link rel="icon" href="./assets/icon/favicon2.ico" />
+    <link rel="icon" href="./assets/imgs/rocket.png" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
   </head>
 
   <body onload="listar()">
     <div class="login">
       <div class="alerta_erro">
-        <div class="card_erro" id="cardErro">
-        </div>
+        <div class="card_erro" id="cardErro"></div>
       </div>
       <div class="container">
         <a href="./index.html" class="exit">➜</a>
@@ -81,8 +80,7 @@
       confirmacaoSenhaVar == ""
     ) {
       cardErro.style.display = "block";
-      mensagem_erro.innerHTML =
-        "*Você deixou campos em branco";
+      mensagem_erro.innerHTML = "*Você deixou campos em branco";
 
       finalizarAguardar();
       return false;

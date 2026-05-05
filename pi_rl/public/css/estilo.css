@@ -43,6 +43,11 @@ body::selection {
   z-index: 999;
 }
 
+.header p{
+  font-size: 40px;
+  color: white;
+}
+
 .container {
   display: flex;
   align-items: center;
@@ -379,3 +384,86 @@ nav ul li a:hover {
     padding-left: 20px;
 }
 
+
+.quiz_pergunta {
+    margin: 2.5% 20%;
+    padding: 25px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border-left: 5px solid #00aeff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.quiz_pergunta h3 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    color: rgb(24, 77, 237, 1);
+    line-height: 1.4;
+}
+
+.quiz_pergunta label {
+    display: block;
+    margin-bottom: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.quiz_pergunta label:hover {
+    background: rgba(0, 174, 255, 0.15);
+}
+
+.quiz_pergunta input[type="radio"] {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.quiz_pergunta input[type="radio"]:checked + span,
+.quiz_pergunta label:has(input:checked) {
+    background: rgba(0, 174, 255, 0.25);
+    border: 1px solid #00aeff;
+}
+
+.quiz_acoes {
+    width: 80%;
+    max-width: 60%;
+    margin: 20px auto;
+    text-align: right;
+}
+
+.btn_proxima {
+    padding: 12px 22px;
+    background:#008fcc;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn_proxima:hover {
+    background: rgb(18, 59, 180);
+    transform: translateY(-2px);
+}
+
+.btn_proxima:active {
+    transform: scale(0.97);
+}
+
+.divquizimg1{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2.5%;
+  
+}
+
+.quizimg1{
+  width: 800px;
+  border: 5px solid #00aeff;
+  border-radius: 15px
+}
