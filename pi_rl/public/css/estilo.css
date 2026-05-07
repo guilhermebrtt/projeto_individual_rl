@@ -243,50 +243,110 @@ nav ul li a:hover {
   justify-content: center;
 }
 
-#mensagem_erro {
-  color: red;
+.card-login{
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(10px);
+    padding: 55px 70px;
+    border-radius: 28px;
+    text-align: center;
+    box-shadow:
+    0 0 30px rgba(0,174,255,0.12),
+    0 15px 40px rgba(0,0,0,0.45);
+    animation: aparecerLogin 0.8s ease;
 }
 
-.card-login {
-  background-color: rgb(3, 3, 20);
-  padding: 50px 100px;
-  border-radius: 15px;
-  text-align: center;
+.card-login h2{
+    font-size: 52px;
+    margin-top: 0;
+    margin-bottom: 35px;
+    color: white;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-shadow:
+    0 0 15px rgba(0,174,255,0.25);
 }
 
-.card-login h2 {
-  font-size: 40px;
-  margin-top: 0;
+.formulario{
+    width: 400px;
 }
 
-.formulario {
-  width: 400px;
+.card-login .campo{
+    text-align: start;
+    margin-bottom: 22px;
 }
 
-.card-login .campo {
-  text-align: start;
+.card-login .campo span{
+    display: block;
+    margin-bottom: 10px;
+    color: rgba(255,255,255,0.85);
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
 }
 
-.card-login input {
-  width: 100%;
-  padding: 10px;
-  border-radius: 5px;
-  border: 0;
+
+.card-login input{
+    width: 100%;
+    padding: 16px 18px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.05);
+    color: white;
+    font-size: 16px;
+    outline: none;
+    transition: 0.3s;
 }
 
-.card-login button {
-  border: 0;
-  margin: 10px;
-  padding: 10px 30px;
-  border-radius: 5px;
-  background-color: rgb(47, 47, 184);
-  color: white;
-  font-size: 18px;
-  font-weight: bold;
+.card-login input::placeholder{
+    color: rgba(255,255,255,0.4);
 }
 
-.ref-cadastro {
-  color: white;
+.card-login input:focus{
+    border: 1px solid rgba(0,174,255,0.7);
+    box-shadow:
+    0 0 20px rgba(0,174,255,0.25);
+    background: rgba(255,255,255,0.07);
+}
+
+.card-login button{
+    border: none;
+    margin-top: 18px;
+    padding: 16px 38px;
+    border-radius: 16px;
+    background:
+    linear-gradient(135deg, #00aaff, #004cff);
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.35s;
+    box-shadow:
+    0 0 25px rgba(0,174,255,0.35);
+}
+
+.card-login button:hover{
+    transform: translateY(-4px) scale(1.04);
+    box-shadow:
+    0 0 40px rgba(0,174,255,0.55);
+    background:
+    linear-gradient(135deg, #00bbff, #005eff);
+}
+
+
+.ref-cadastro{
+    display: inline-block;
+    margin-top: 25px;
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+.ref-cadastro:hover{
+    color: #00aeff;
+    text-shadow:
+    0 0 12px rgba(0,174,255,0.35);
 }
 
 .exit {
@@ -298,6 +358,25 @@ nav ul li a:hover {
   left: 30px;
   transform: scaleX(-1);
 }
+
+#mensagem_erro{
+    margin-top: 15px;
+    color: #ff4d4d;
+    font-weight: bold;
+}
+
+@keyframes aparecerLogin{
+    from{
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 
 .box1_content {
   display: flex;
