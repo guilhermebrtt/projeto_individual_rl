@@ -254,6 +254,18 @@
         </div>
         <img src="" alt="" />
       </div>
+      <a id="linkQuiz">
+        <button class="btn_quiz">Testar Meu Conhecimento</button>
+      </a>
     </div>
   </body>
+  <script>
+    const linkQuiz = document.getElementById("linkQuiz");
+
+    if (sessionStorage.ID_USUARIO) {
+      linkQuiz.href = "./homequiz.html";
+    } else {
+      linkQuiz.href = "./login.html";
+    }
+  </script>
 </html>
