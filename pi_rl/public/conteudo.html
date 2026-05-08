@@ -29,7 +29,7 @@
             <li>
               <b><a href="./conteudo.html">Conteúdo</a></b>
             </li>
-            <li><a href="./login.html">Entrar</a></li>
+            <li><a id="link_header" href="./login.html">Entrar</a></li>
           </ul>
         </nav>
       </div>
@@ -266,6 +266,16 @@
       linkQuiz.href = "./homequiz.html";
     } else {
       linkQuiz.href = "./login.html";
+    }
+
+    const linkHeader = document.getElementById("link_header");
+
+    if (sessionStorage.ID_USUARIO) {
+      linkHeader.innerHTML = "Quiz";
+      linkHeader.href = "./homequiz.html";
+    } else {
+      linkHeader.innerHTML = "Entrar";
+      linkHeader.href = "./login.html";
     }
   </script>
 </html>
