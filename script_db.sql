@@ -9,7 +9,7 @@ DROP TABLE usuario;
 
 CREATE TABLE usuario(
 id_usuario INT PRIMARY KEY AUTO_INCREMENT,
-nome_usuario VARCHAR(100),
+nome_usuario VARCHAR(100) NOT NULL,
 email VARCHAR(150) NOT NULL,
 senha VARCHAR(255) NOT NULL,
 dt_cadastro DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -52,7 +52,7 @@ id_resposta INT PRIMARY KEY AUTO_INCREMENT,
 fk_tentativa INT NOT NULL,
 fk_pergunta INT NOT NULL,
 reposta_marcada CHAR(1) NOT NULL,
-acertou BOOLEAN NOT NULL,
+acertou TINYINT NOT NULL,
 tempo_pergunta INT NOT NULL,
 
 FOREIGN KEY (fk_tentativa) REFERENCES tentativa_quiz(id_tentativa),
