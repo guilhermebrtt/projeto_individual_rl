@@ -52,7 +52,7 @@ id_resposta INT PRIMARY KEY AUTO_INCREMENT,
 fk_tentativa INT NOT NULL,
 fk_pergunta INT NOT NULL,
 reposta_marcada CHAR(1) NOT NULL,
-acertou BOOLEAN NOT NULL,
+acertou TINYINT NOT NULL,
 tempo_pergunta INT NOT NULL,
 
 FOREIGN KEY (fk_tentativa) REFERENCES tentativa_quiz(id_tentativa),
