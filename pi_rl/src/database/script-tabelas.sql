@@ -1,62 +1,60 @@
--- Arquivo de apoio, caso você queira criar tabelas como as aqui criadas para a API funcionar.
--- Você precisa executar os comandos no banco de dados para criar as tabelas,
--- ter este arquivo aqui não significa que a tabela em seu BD estará como abaixo!
+CREATE DATABASE RocketLeague;
+USE RocketLeague;
 
-/*
-comandos para mysql server
-*/
+DROP TABLE resposta_usuario;
+DROP TABLE tentativa_quiz;
+DROP TABLE pergunta;
+DROP TABLE categoria;
+DROP TABLE usuario;
 
-CREATE DATABASE aquatech;
-
-USE aquatech;
-
-CREATE TABLE empresa (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	razao_social VARCHAR(50),
-	cnpj CHAR(14),
-	codigo_ativacao VARCHAR(50)
+CREATE TABLE usuario(
+id_usuario INT PRIMARY KEY AUTO_INCREMENT,
+nome_usuario VARCHAR(100) NOT NULL,
+email VARCHAR(150) NOT NULL,
+senha VARCHAR(255) NOT NULL,
+dt_cadastro DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE usuario (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	nome VARCHAR(50),
-	email VARCHAR(50),
-	senha VARCHAR(50),
-	fk_empresa INT,
-	FOREIGN KEY (fk_empresa) REFERENCES empresa(id)
+CREATE TABLE categoria(
+id_categoria INT PRIMARY KEY AUTO_INCREMENT,
+nome_categoria VARCHAR(30) NOT NULL CHECK (nome_categoria IN ('Gamleplay', 'Conceitos', 'Competitivo'))
 );
 
-CREATE TABLE aviso (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	titulo VARCHAR(100),
-	descricao VARCHAR(150),
-	fk_usuario INT,
-	FOREIGN KEY (fk_usuario) REFERENCES usuario(id)
+CREATE TABLE pergunta(
+id_pergunta INT PRIMARY KEY AUTO_INCREMENT,
+pergunta VARCHAR(255) NOT NULL,
+alternativa_a VARCHAR(255) NOT NULL,
+alternativa_b VARCHAR(255) NOT NULL,
+alternativa_c VARCHAR(255) NOT NULL,
+alternativa_d VARCHAR(255) NOT NULL,
+alternativa_e VARCHAR(255) NOT NULL,
+alternativa_correta CHAR(1) NOT NULL,
+fk_categoria INT NOT NULL,
+nivel_dificuldade VARCHAR(20) NOT NULL, 
+
+FOREIGN KEY (fk_categoria) REFERENCES categoria(id_categoria)
 );
 
-create table aquario (
-/* em nossa regra de negócio, um aquario tem apenas um sensor */
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	descricao VARCHAR(300),
-	fk_empresa INT,
-	FOREIGN KEY (fk_empresa) REFERENCES empresa(id)
+CREATE TABLE tentativa_quiz(
+id_tentativa INT PRIMARY KEY AUTO_INCREMENT,
+fk_usuario INT NOT NULL,
+pontuacao INT NOT NULL,
+qtd_acertos INT NOT NULL,
+qtd_erros INT NOT NULL,
+tempo_total INT NOT NULL,
+data_tentativa DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario)
 );
 
-/* esta tabela deve estar de acordo com o que está em INSERT de sua API do arduino - dat-acqu-ino */
+CREATE TABLE resposta_usuario(
+id_resposta INT PRIMARY KEY AUTO_INCREMENT,
+fk_tentativa INT NOT NULL,
+fk_pergunta INT NOT NULL,
+resposta_marcada CHAR(1) NOT NULL,
+acertou TINYINT NOT NULL,
+tempo_pergunta INT NOT NULL,
 
-create table medida (
-	id INT PRIMARY KEY AUTO_INCREMENT,
-	dht11_umidade DECIMAL,
-	dht11_temperatura DECIMAL,
-	luminosidade DECIMAL,
-	lm35_temperatura DECIMAL,
-	chave TINYINT,
-	momento DATETIME,
-	fk_aquario INT,
-	FOREIGN KEY (fk_aquario) REFERENCES aquario(id)
+FOREIGN KEY (fk_tentativa) REFERENCES tentativa_quiz(id_tentativa),
+FOREIGN KEY (fk_pergunta) REFERENCES pergunta(id_pergunta)
 );
-
-insert into empresa (razao_social, codigo_ativacao) values ('Empresa 1', 'ED145B');
-insert into empresa (razao_social, codigo_ativacao) values ('Empresa 2', 'A1B2C3');
-insert into aquario (descricao, fk_empresa) values ('Aquário de Estrela-do-mar', 1);
-insert into aquario (descricao, fk_empresa) values ('Aquário de Peixe-dourado', 2);
