@@ -17,7 +17,7 @@ dt_cadastro DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 
 CREATE TABLE categoria(
 id_categoria INT PRIMARY KEY AUTO_INCREMENT,
-nome_categoria VARCHAR(30) NOT NULL CHECK (nomeCategoria IN ('Gamleplay', 'Conceitos', 'Competitivo'))
+nome_categoria VARCHAR(30) NOT NULL CHECK (nome_categoria IN ('Gamleplay', 'Conceitos', 'Competitivo'))
 );
 
 CREATE TABLE pergunta(
@@ -51,15 +51,10 @@ CREATE TABLE resposta_usuario(
 id_resposta INT PRIMARY KEY AUTO_INCREMENT,
 fk_tentativa INT NOT NULL,
 fk_pergunta INT NOT NULL,
-reposta_marcada CHAR(1) NOT NULL,
+resposta_marcada CHAR(1) NOT NULL,
 acertou TINYINT NOT NULL,
 tempo_pergunta INT NOT NULL,
 
 FOREIGN KEY (fk_tentativa) REFERENCES tentativa_quiz(id_tentativa),
 FOREIGN KEY (fk_pergunta) REFERENCES pergunta(id_pergunta)
 );
-
-
-
-
-
