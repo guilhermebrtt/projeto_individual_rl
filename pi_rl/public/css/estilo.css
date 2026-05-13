@@ -522,7 +522,7 @@ nav ul li a:hover {
 }
 
 .span_vermelho{
-    color: rgb(210, 50, 50);
+    color: rgb(0, 0, 0);
 }
 
 .span_azul:hover{
@@ -782,6 +782,12 @@ nav ul li a:hover {
     box-shadow:
     0 0 35px rgba(0,170,255,0.6);
     background: linear-gradient(135deg, #0099ff, #005eff);
+}
+
+.home_quiz_perguntas{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
 }
 
 @keyframes fadeUp{
