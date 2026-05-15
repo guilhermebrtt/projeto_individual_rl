@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rocket League | Sobre Mim</title>
+
+    <script src="./js/sessao.js"></script>
+    <link rel="stylesheet" href="./css/estilo.css" />
+    <link rel="icon" href="./assets/imgs/rocket.png" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+  </head>
+
+  <body class="body_sobre">
+    <div class="banner_sobre">
+      <div class="overlay_banner">
+        <a href="./index.html" class="exit">➜</a>
+        <h1>
+          Muito além de um jogo:
+          <span>uma parte importante da minha história.</span>
+        </h1>
+
+        <p>
+          Rocket League não foi apenas um passatempo. O jogo marcou momentos da
+          minha infância, criou amizades importantes e despertou a ideia deste
+          projeto.
+        </p>
+      </div>
+    </div>
+
+    <div class="container_sobre">
+      <div class="card_sobre">
+        <div class="texto_sobre">
+          <h2>Como tudo começou</h2>
+
+          <p>
+            Minha conexão com Rocket League começou pela minha paixão por
+            <b>futebol</b> e <b>carros</b>. Sempre gostei de jogos relacionados
+            a esses temas, como FIFA e Forza Horizon, mas encontrar um jogo que
+            misturasse os dois foi algo completamente diferente.
+          </p>
+
+          <p>
+            Quando conheci Rocket League, eu ainda não podia comprar o jogo.
+            Lembro de pedir para minha mãe me levar até a livraria Saraiva para
+            jogar nos videogames disponíveis lá. Mesmo jogando por pouco tempo,
+            aquilo já era suficiente para me deixar apaixonado.
+          </p>
+
+          <p>
+            Depois que finalmente consegui jogar em casa, passei meses entrando
+            todos os dias no jogo. Eu chegava da escola e ia direto jogar.
+            Durante esse período, acabei criando amizades muito importantes por
+            causa do Rocket League.
+          </p>
+        </div>
+
+        <div class="img_sobre">
+          <img src="./assets/imgs/sobre1.jpg" alt="Imagem pessoal" />
+        </div>
+      </div>
+
+      <div class="card_sobre reverse">
+        <div class="img_sobre">
+          <img src="./assets/imgs/amigos_jogando.png" alt="Amigos jogando" />
+        </div>
+
+        <div class="texto_sobre">
+          <h2>As amizades criadas pelo jogo</h2>
+
+          <p>
+            Hoje, boa parte dessas amizades ainda fazem parte da minha vida.
+            Muitas pessoas que conheci através do Rocket League continuam no meu
+            ciclo social até hoje.
+          </p>
+
+          <p>
+            O jogo acabou se tornando uma forma de reunir amigos, conversar,
+            competir e criar memórias. Mesmo fora das partidas, ele continuou
+            presente em vários momentos importantes da minha rotina.
+          </p>
+
+          <p>
+            Por isso, este projeto também representa uma parte pessoal da minha
+            trajetória, não apenas um trabalho técnico.
+          </p>
+        </div>
+      </div>
+
+      <div class="titulo_galeria">
+        <h2>Momentos e amizades</h2>
+        <p>
+          Espaço reservado para adicionar fotos pessoais, amigos e momentos
+          relacionados ao que o jogo me proporcionou.
+        </p>
+      </div>
+
+      <div class="galeria_amigos">
+        <div class="foto_amigo">
+          <img src="./assets/imgs/amigos1.jpg" alt="Foto amigos 1" />
+        </div>
+
+        <div class="foto_amigo">
+          <img src="./assets/imgs/amigos2.jpg" alt="Foto amigos 2" />
+        </div>
+
+        <div class="foto_amigo">
+          <img src="./assets/imgs/amigos3.jpg" alt="Foto amigos 3" />
+        </div>
+
+        <div class="foto_amigo">
+          <img src="./assets/imgs/amigos4.jpg" alt="Foto amigos 4" />
+        </div>
+      </div>
+
+      <div class="card_objetivo">
+        <h2>O motivo da criação do site</h2>
+
+        <p>
+          Durante minha experiência jogando Rocket League, percebi que muitos
+          jogadores iniciantes tinham dificuldade para entender conceitos
+          básicos como <b>rotação</b>, <b>posicionamento</b> e
+          <b>movimentação</b>.
+        </p>
+
+        <p>
+          A partir disso, surgiu a ideia de criar um site que organizasse essas
+          informações de forma mais simples e acessível, ajudando novos
+          jogadores a aprenderem o jogo de maneira mais estruturada.
+        </p>
+
+        <p>
+          Além da parte informativa, o projeto também conta com um sistema de
+          quiz e dashboard para coletar dados, analisar desempenho e aplicar
+          conhecimentos técnicos de desenvolvimento web e banco de dados.
+        </p>
+      </div>
+    </div>
+
+    <script>
+      const linkHeader = document.getElementById("link_header");
+
+      if (sessionStorage.ID_USUARIO) {
+        linkHeader.innerHTML = "Quiz";
+        linkHeader.href = "./homequiz.html";
+      } else {
+        linkHeader.innerHTML = "Entrar";
+        linkHeader.href = "./login.html";
+      }
+    </script>
+  </body>
+</html>
