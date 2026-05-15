@@ -3,7 +3,7 @@ var router = express.Router();
 
 var quizController = require("../controllers/quizController");
 
-router.post("/listarPerguntasQuiz", function (req, res) {
+router.get("/listarPerguntasQuiz/:dificuldade", function (req, res) {
   quizController.listarPerguntasQuiz(req, res);
 });
 
