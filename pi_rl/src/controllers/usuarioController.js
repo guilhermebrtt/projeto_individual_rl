@@ -18,7 +18,11 @@ function autenticar(req, res) {
         if (resultadoAutenticar.length == 0) {
           res.status(403).send("Email e/ou senha inválido(s)");
         } else if (resultadoAutenticar.length == 1) {
-          res.json(resultadoAutenticar[0]);
+          res.json({
+            id_usuario: resultadoAutenticar[0].id_usuario,
+            nome_usuario: resultadoAutenticar[0].nome_usuario,
+            email: resultadoAutenticar[0].email,
+          });
         } else {
           res.status(403).send("Mais de um usuário com o mesmo login e senha!");
         }
