@@ -803,7 +803,7 @@ nav ul li a:hover {
 }
 
 .body_quiz{
-    min-height: 92.4vh;
+    min-height: 100vh;
 
     background:
     linear-gradient(rgba(0,0,0,0.82), rgba(0,0,0,0.88)),

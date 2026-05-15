@@ -9,56 +9,98 @@
 
     <link rel="stylesheet" href="./css/estilo.css" />
     <link rel="icon" href="./assets/imgs/rocket.png" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" />
   </head>
 
   <body class="body_quiz">
     <div class="header">
       <div class="container">
-        <a href="./index.html"
-          ><img
+        <a href="./index.html">
+          <img
             class="logo"
             src="./assets/imgs/logo_rocket.png"
             alt="Logo do Rocket League"
-        /></a>
+          />
+        </a>
+
         <p><b>Questionário de Conhecimento</b></p>
       </div>
     </div>
-    <div class="quiz_pergunta">
-      <h3>
-        1-) Qual é o modo de jogo mais popular no competitivo de Rocket League?
-      </h3>
 
-      <div class="divquizimg1">
-        <img class="quizimg1" src="./assets/imgs/quiz1.gif" alt="" />
-      </div>
-      <label>
-        <input type="radio" name="pergunta1" value="1" />
-        1x1 (Duelo)
-      </label>
+    <div id="quiz_container"></div>
 
-      <label>
-        <input type="radio" name="pergunta1" value="2" />
-        2x2 (Duplas)
-      </label>
-
-      <label>
-        <input type="radio" name="pergunta1" value="3" />
-        3x3 (Padrão)
-      </label>
-
-      <label>
-        <input type="radio" name="pergunta1" value="4" />
-        Rumble
-      </label>
-
-      <label>
-        <input type="radio" name="pergunta1" value="5" />
-        Hoops
-      </label>
-    </div>
     <div class="quiz_acoes">
-      <button class="btn_proxima">Próxima Pergunta</button>
+      <button class="btn_proxima" onclick="proximaPergunta()">
+        Próxima Pergunta
+      </button>
     </div>
   </body>
 </html>
+
+<script>
+  let perguntas = [];
+  let perguntaAtual = 0;
+
+  // pega dificuldade da URL
+  const parametros = new URLSearchParams(window.location.search);
+  const dificuldade = parametros.get("dificuldade");
+
+  fetch("/quiz/listarPerguntasQuiz", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      dificuldadeServer: dificuldade,
+    }),
+  })
+    .then(function (resposta) {
+      return resposta.json();
+    })
+    .then(function (dados) {
+      perguntas = dados;
+
+      mostrarPergunta();
+    })
+    .catch(function (erro) {
+      console.log(erro);
+    });
+
+  function mostrarPergunta() {
+    const pergunta = perguntas[perguntaAtual];
+
+    document.getElementById("quiz_container").innerHTML = `
+      <div class="quiz_pergunta">
+
+        <h3>
+          ${perguntaAtual + 1}-) ${pergunta.pergunta}
+        </h3>
+
+        <label>
+          <input type="radio" name="alternativa" value="A">
+          ${pergunta.alternativa_a}
+        </label>
+
+        <label>
+          <input type="radio" name="alternativa" value="B">
+          ${pergunta.alternativa_b}
+        </label>
+
+        <label>
+          <input type="radio" name="alternativa" value="C">
+          ${pergunta.alternativa_c}
+        </label>
+
+        <label>
+          <input type="radio" name="alternativa" value="D">
+          ${pergunta.alternativa_d}
+        </label>
+
+        <label>
+          <input type="radio" name="alternativa" value="E">
+          ${pergunta.alternativa_e}
+        </label>
+
+      </div>
+    `;
+  }
+</script>
