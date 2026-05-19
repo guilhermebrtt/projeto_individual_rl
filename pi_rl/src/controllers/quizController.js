@@ -2,24 +2,14 @@ var quizModel = require("../models/quizModel");
 
 function listarPerguntasQuiz(req, res) {
   var dificuldade = req.params.dificuldade;
-
-  if (dificuldade == undefined) {
-    res.status(400).send("A dificuldade está undefined!");
-  } else {
-    quizModel
-      .listarPerguntasQuiz(dificuldade)
-      .then(function (resultado) {
-        res.status(200).json(resultado);
-      })
-      .catch(function (erro) {
-        console.log(erro);
-        console.log(
-          "\nHouve um erro ao buscar as perguntas! Erro: ",
-          erro.sqlMessage,
-        );
-        res.status(500).json(erro.sqlMessage);
-      });
-  }
+  quizModel
+    .listarPerguntasQuiz(dificuldade)
+    .then(function (resultado) {
+      res.json(resultado);
+    })
+    .catch(function (erro) {
+      res.status(500).json(erro);
+    });
 }
 
 async function finalizarQuiz(req, res) {

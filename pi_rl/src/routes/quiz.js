@@ -3,11 +3,11 @@ var router = express.Router();
 
 var quizController = require("../controllers/quizController");
 
-router.get("/listarPerguntasQuiz/:dificuldade", function (req, res) {
+router.post("/listarPerguntasQuiz/:dificuldade", function (req, res) {
   quizController.listarPerguntasQuiz(req, res);
 });
 
-router.post("/finalizarQuiz", function (req, res) {
+router.post("finalizarQuiz", function (req, res) {
   quizController.finalizarQuiz(req, res);
 });
 

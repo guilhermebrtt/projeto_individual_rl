@@ -40,11 +40,10 @@
   let perguntas = [];
   let perguntaAtual = 0;
 
-  // pega dificuldade da URL
   const parametros = new URLSearchParams(window.location.search);
   const dificuldade = parametros.get("dificuldade");
 
-  fetch("/quiz/listarPerguntasQuiz", {
+  fetch(`/quiz/listarPerguntasQuiz/${dificuldade}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -54,19 +53,43 @@
     }),
   })
     .then(function (resposta) {
+      console.log("Resposta recebida:", resposta);
+
+      console.log("Status:", resposta.status);
+
+      if (!resposta.ok) {
+        throw new Error(
+          `Erro HTTP: ${resposta.status} | Rota provavelmente inexistente`,
+        );
+      }
+
       return resposta.json();
     })
+
     .then(function (dados) {
+      console.log("Dados recebidos do banco:", dados);
+
       perguntas = dados;
+
+      if (perguntas.length == 0) {
+        console.log("Nenhuma pergunta encontrada");
+        return;
+      }
 
       mostrarPergunta();
     })
+
     .catch(function (erro) {
+      console.log("ERRO COMPLETO:");
       console.log(erro);
     });
 
   function mostrarPergunta() {
+    console.log("Mostrando pergunta:", perguntaAtual);
+
     const pergunta = perguntas[perguntaAtual];
+
+    console.log("Objeto pergunta:", pergunta);
 
     document.getElementById("quiz_container").innerHTML = `
       <div class="quiz_pergunta">
@@ -103,13 +126,21 @@
       </div>
     `;
   }
+
   function proximaPergunta() {
+    console.log("Próxima pergunta");
+
     perguntaAtual++;
+
+    console.log("Índice atual:", perguntaAtual);
 
     if (perguntaAtual < perguntas.length) {
       mostrarPergunta();
     } else {
+      console.log("Quiz finalizado");
+
       alert("Quiz finalizado!");
+
       window.location = "../dashboard/dashboard.html";
     }
   }

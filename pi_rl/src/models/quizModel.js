@@ -1,9 +1,13 @@
 var database = require("../database/config");
 
 function listarPerguntasQuiz(dificuldade) {
-  var instrucaoSql = `SELECT * FROM pergunta WHERE nivel_dificuldade = '${dificuldade}'`;
+  var instrucaoSql = `
+    SELECT * FROM pergunta
+    WHERE nivel_dificuldade = '${dificuldade}';
+  `;
 
-  console.log("Executando a instrução SQL: \n" + instrucaoSql);
+  console.log(instrucaoSql);
+
   return database.executar(instrucaoSql);
 }
 
@@ -59,6 +63,8 @@ function cadastrarResposta(
   return database.executar(instrucaoSql);
 }
 
-function salvarResultado(idUsuario, acertos, erros, dificuldade, tempo) {
-  var instrucaoSql = `INSERT INTO resultado`;
-}
+module.exports = {
+  listarPerguntasQuiz,
+  cadastrarTentativa,
+  cadastrarResposta,
+};
