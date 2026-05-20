@@ -21,8 +21,7 @@
             alt="Logo do Rocket League"
           />
         </a>
-
-        <p><b>Questionário de Conhecimento</b></p>
+        <p>Quiz</p>
       </div>
     </div>
 
@@ -40,6 +39,10 @@
   let perguntas = [];
   let perguntaAtual = 0;
 
+  let respostasUsuario = [];
+  let acertos = 0;
+  let erros = 0;
+
   const parametros = new URLSearchParams(window.location.search);
   const dificuldade = parametros.get("dificuldade");
 
@@ -55,19 +58,15 @@
     .then(function (resposta) {
       console.log("Resposta recebida:", resposta);
 
-      console.log("Status:", resposta.status);
-
       if (!resposta.ok) {
-        throw new Error(
-          `Erro HTTP: ${resposta.status} | Rota provavelmente inexistente`,
-        );
+        throw new Error(`Erro HTTP: ${resposta.status}`);
       }
 
       return resposta.json();
     })
 
     .then(function (dados) {
-      console.log("Dados recebidos do banco:", dados);
+      console.log("Dados recebidos:", dados);
 
       perguntas = dados;
 
@@ -80,16 +79,11 @@
     })
 
     .catch(function (erro) {
-      console.log("ERRO COMPLETO:");
-      console.log(erro);
+      console.log("ERRO:", erro);
     });
 
   function mostrarPergunta() {
-    console.log("Mostrando pergunta:", perguntaAtual);
-
     const pergunta = perguntas[perguntaAtual];
-
-    console.log("Objeto pergunta:", pergunta);
 
     document.getElementById("quiz_container").innerHTML = `
       <div class="quiz_pergunta">
@@ -123,25 +117,44 @@
           ${pergunta.alternativa_e}
         </label>
 
+        <div id="mensagem_quiz"></div>
+
       </div>
     `;
   }
 
   function proximaPergunta() {
-    console.log("Próxima pergunta");
+    const alternativaSelecionada = document.querySelector(
+      'input[name="alternativa"]:checked',
+    );
+    if (!alternativaSelecionada) {
+      document.getElementById("mensagem_quiz").innerHTML =
+        "Selecione uma alternativa antes de continuar.";
+    }
+    const respostaUsuario = alternativaSelecionada.value;
+    const pergunta = perguntas[perguntaAtual];
+    let acertou = false;
+
+    if (respostaUsuario == pergunta.alternativa_correta) {
+      acertos++;
+      acertou = true;
+    } else {
+      erros++;
+    }
+
+    respostasUsuario.push({
+      idPergunta: pergunta.id_pergunta,
+      respostaMarcada: respostaUsuario,
+      respostaCorreta: pergunta.alternativa_correta,
+      acertou: acertou,
+    });
 
     perguntaAtual++;
-
-    console.log("Índice atual:", perguntaAtual);
-
     if (perguntaAtual < perguntas.length) {
       mostrarPergunta();
     } else {
-      console.log("Quiz finalizado");
-
-      alert("Quiz finalizado!");
-
-      window.location = "../dashboard/dashboard.html";
+      window.location = "./dashboard/dashboard.html";
+      console.log("Respostas do usuário:", respostasUsuario);
     }
   }
 </script>

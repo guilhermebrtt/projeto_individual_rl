@@ -1083,9 +1083,12 @@ nav ul li a:hover {
   color: #e7e7e7;
 }
 
-
-
-
+#mensagem_quiz{
+    color: #ff5e5e;
+    font-weight: bold;
+    margin-top: 15px;
+    text-align: center;
+}
 
 .body_dashboard {
   background:
