@@ -7,7 +7,9 @@ router.post("/listarPerguntasQuiz/:dificuldade", function (req, res) {
   quizController.listarPerguntasQuiz(req, res);
 });
 
-router.post("finalizarQuiz", function (req, res) {
+router.post("/finalizarQuiz", function (req, res) {
+  console.log("finalizarQuiz aqui");
+
   quizController.finalizarQuiz(req, res);
 });
 

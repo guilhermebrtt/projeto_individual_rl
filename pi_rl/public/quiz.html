@@ -46,6 +46,8 @@
   const parametros = new URLSearchParams(window.location.search);
   const dificuldade = parametros.get("dificuldade");
 
+  const inicioQuiz = Date.now();
+
   fetch(`/quiz/listarPerguntasQuiz/${dificuldade}`, {
     method: "POST",
     headers: {
@@ -74,6 +76,18 @@
         perguntaAtual = Number(sessionStorage.PERGUNTA_ATUAL);
       }
 
+      // impede índice inválido
+      if (perguntaAtual >= perguntas.length) {
+        sessionStorage.removeItem("PERGUNTA_ATUAL");
+        sessionStorage.removeItem("RESPOSTAS");
+
+        perguntaAtual = 0;
+      }
+
+      if (sessionStorage.RESPOSTAS) {
+        respostasUsuario = JSON.parse(sessionStorage.RESPOSTAS);
+      }
+
       mostrarPergunta();
     })
 
@@ -83,6 +97,11 @@
 
   function mostrarPergunta() {
     const pergunta = perguntas[perguntaAtual];
+
+    if (!pergunta) {
+      console.log("Pergunta não encontrada");
+      return;
+    }
 
     document.getElementById("quiz_container").innerHTML = `
       <div class="quiz_pergunta">
@@ -126,26 +145,21 @@
     const alternativaSelecionada = document.querySelector(
       'input[name="alternativa"]:checked',
     );
+
     if (!alternativaSelecionada) {
       document.getElementById("mensagem_quiz").innerHTML =
         "Selecione uma alternativa antes de continuar.";
+      return;
     }
-    const respostaUsuario = alternativaSelecionada.value;
-    const pergunta = perguntas[perguntaAtual];
-    let acertou = false;
 
+    const pergunta = perguntas[perguntaAtual];
+    const respostaUsuario = alternativaSelecionada.value;
+    let acertou = false;
     if (respostaUsuario == pergunta.alternativa_correta) {
       acertos++;
       acertou = true;
     } else {
       erros++;
-    }
-
-    respostasUsuario[perguntaAtual] = alternativaSelecionada.value;
-    sessionStorage.RESPOSTAS = JSON.stringify(respostasUsuario);
-
-    if (sessionStorage.RESPOSTAS) {
-      respostasUsuario = JSON.parse(sessionStorage.RESPOSTAS);
     }
 
     respostasUsuario.push({
@@ -155,17 +169,60 @@
       acertou: acertou,
     });
 
-    console.log("Respostas do usuário:", respostasUsuario);
-
+    sessionStorage.RESPOSTAS = JSON.stringify(respostasUsuario);
     perguntaAtual++;
     sessionStorage.PERGUNTA_ATUAL = perguntaAtual;
-    if (perguntaAtual < perguntas.length) {
-      mostrarPergunta();
-    } else {
-      alert("Quiz finalizado!");
-      sessionStorage.removeItem("PERGUNTA_ATUAL");
-      window.location = "./dashboard/dashboard.html";
-      console.log("Respostas do usuário:", respostasUsuario);
+    if (perguntaAtual >= perguntas.length) {
+      finalizarQuiz();
+      return;
     }
+    mostrarPergunta();
+  }
+
+  function finalizarQuiz() {
+    const fimQuiz = Date.now();
+    const tempoTotal = Math.floor((fimQuiz - inicioQuiz) / 1000);
+    const pontuacao = acertos * 10;
+
+    console.log({
+      idUsuario: sessionStorage.ID_USUARIO,
+      pontuacao: pontuacao,
+      acertos: acertos,
+      erros: erros,
+      tempo: tempoTotal,
+      respostas: respostasUsuario,
+    });
+
+    fetch("/quiz/finalizarQuiz", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        idUsuarioServer: sessionStorage.ID_USUARIO,
+        pontuacaoServer: pontuacao,
+        acertosServer: acertos,
+        errosServer: erros,
+        tempoServer: tempoTotal,
+        respostasServer: respostasUsuario,
+      }),
+    })
+      .then(function (resposta) {
+        if (resposta.ok) {
+          console.log("Quiz salvo com sucesso!");
+
+          sessionStorage.removeItem("PERGUNTA_ATUAL");
+          sessionStorage.removeItem("RESPOSTAS");
+
+          window.location = "./dashboard/dashboard.html";
+        } else {
+          console.log("Erro ao salvar quiz");
+        }
+      })
+
+      .catch(function (erro) {
+        console.log("Erro no fetch:", erro);
+      });
   }
 </script>
