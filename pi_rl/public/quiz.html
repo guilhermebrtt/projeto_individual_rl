@@ -70,9 +70,8 @@
 
       perguntas = dados;
 
-      if (perguntas.length == 0) {
-        console.log("Nenhuma pergunta encontrada");
-        return;
+      if (sessionStorage.PERGUNTA_ATUAL) {
+        perguntaAtual = Number(sessionStorage.PERGUNTA_ATUAL);
       }
 
       mostrarPergunta();
@@ -142,6 +141,13 @@
       erros++;
     }
 
+    respostasUsuario[perguntaAtual] = alternativaSelecionada.value;
+    sessionStorage.RESPOSTAS = JSON.stringify(respostasUsuario);
+
+    if (sessionStorage.RESPOSTAS) {
+      respostasUsuario = JSON.parse(sessionStorage.RESPOSTAS);
+    }
+
     respostasUsuario.push({
       idPergunta: pergunta.id_pergunta,
       respostaMarcada: respostaUsuario,
@@ -149,10 +155,15 @@
       acertou: acertou,
     });
 
+    console.log("Respostas do usuário:", respostasUsuario);
+
     perguntaAtual++;
+    sessionStorage.PERGUNTA_ATUAL = perguntaAtual;
     if (perguntaAtual < perguntas.length) {
       mostrarPergunta();
     } else {
+      alert("Quiz finalizado!");
+      sessionStorage.removeItem("PERGUNTA_ATUAL");
       window.location = "./dashboard/dashboard.html";
       console.log("Respostas do usuário:", respostasUsuario);
     }
