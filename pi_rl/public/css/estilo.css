@@ -334,6 +334,12 @@ nav ul li a:hover {
     font-size: 15px;
 }
 
+.link_sobre{
+    text-decoration: none;
+    color: white;
+    text-shadow:
+    0 0 15px rgba(0,174,255,0.3);
+}
 
 .login {
   display: flex;
@@ -979,7 +985,9 @@ nav ul li a:hover {
   width: 85%;
   margin: auto;
   padding: 80px 0;
+  transition: 0.4s;
 }
+
 .card_sobre {
   display: flex;
   align-items: center;
@@ -1016,6 +1024,10 @@ nav ul li a:hover {
   border-radius: 22px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   object-fit: cover;
+}
+.img_sobre img:hover{
+    transform: scale(1.02);
+    transition: 0.4s;
 }
 .titulo_galeria {
   text-align: center;
@@ -1062,7 +1074,7 @@ nav ul li a:hover {
 .card_objetivo h2 {
   font-size: 48px;
   margin-bottom: 30px;
-  color: #ff7b00;
+  color: #ffffff;
 }
 .card_objetivo p {
   font-size: 21px;
