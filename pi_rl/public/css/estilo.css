@@ -159,8 +159,6 @@ nav ul li a:hover {
     0 25px 50px rgba(24,77,237,0.28);
 }
 
-/* ===== BOX 2 ===== */
-
 .box2{
     display: flex;
     flex-direction: column;
@@ -336,16 +334,6 @@ nav ul li a:hover {
     font-size: 15px;
 }
 
-@keyframes surgirCima{
-    from{
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to{
-        opacity: 1;
-        transform: translateY(0);
-    }
-  }
 
 .login {
   display: flex;
@@ -486,16 +474,10 @@ nav ul li a:hover {
     font-weight: bold;
 }
 
-@keyframes aparecerLogin{
-    from{
-        opacity: 0;
-        transform: translateY(30px);
-    }
-
-    to{
-        opacity: 1;
-        transform: translateY(0);
-    }
+#mensagem_concluido{
+    margin-top: 15px;
+    color: #ffffff;
+    font-weight: bold;
 }
 
 .box1_content{
@@ -790,17 +772,6 @@ nav ul li a:hover {
     justify-content: space-evenly;
 }
 
-@keyframes fadeUp{
-    from{
-        opacity: 0;
-        transform: translateY(30px);
-    }
-
-    to{
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 
 .body_quiz{
     min-height: 100vh;
@@ -937,18 +908,6 @@ nav ul li a:hover {
 
 .btn_proxima:active{
     transform: scale(0.97);
-}
-
-@keyframes aparecer{
-    from{
-        opacity: 0;
-        transform: translateY(30px);
-    }
-
-    to{
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 .body_sobre {

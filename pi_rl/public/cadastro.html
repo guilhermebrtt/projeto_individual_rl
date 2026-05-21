@@ -51,6 +51,7 @@
             <button class="botao" onclick="cadastrar()">Cadastrar</button>
           </div>
           <div id="mensagem_erro"></div>
+          <div id="mensagem_concluido"></div>
           <a href="./login.html" class="ref-cadastro">Já sou Cadastrado!</a>
         </div>
       </div>
@@ -110,7 +111,7 @@
     }).then(function (resposta) {
       console.log("Resposta:", resposta);
       if (resposta.ok) {
-        mensagem_erro.innerHTML = "Cadastro realizado com sucesso!";
+        mensagem_concluido.innerHTML = "Cadastro realizado com sucesso!";
         setTimeout(() => {
           window.location = "login.html";
         }, 2000);

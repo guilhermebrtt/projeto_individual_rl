@@ -43,7 +43,7 @@ async function finalizarQuiz(req, res) {
 
     var idTentativa = resultadoTentativa.insertId;
 
-    for (var i = 0; i < respostas.length; i++) {
+    for (let i = 0; i < respostas.length; i++) {
       await quizModel.cadastrarResposta(
         idTentativa,
         respostas[i].idPergunta,

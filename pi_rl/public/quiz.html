@@ -28,7 +28,7 @@
     <div id="quiz_container"></div>
 
     <div class="quiz_acoes">
-      <button class="btn_proxima" onclick="proximaPergunta()">
+      <button id="btnQuiz" class="btn_proxima" onclick="proximaPergunta()">
         Próxima Pergunta
       </button>
     </div>
@@ -76,7 +76,6 @@
         perguntaAtual = Number(sessionStorage.PERGUNTA_ATUAL);
       }
 
-      // impede índice inválido
       if (perguntaAtual >= perguntas.length) {
         sessionStorage.removeItem("PERGUNTA_ATUAL");
         sessionStorage.removeItem("RESPOSTAS");
@@ -139,6 +138,14 @@
 
       </div>
     `;
+
+    const btnQuiz = document.getElementById("btnQuiz");
+
+    if (perguntaAtual == perguntas.length - 1) {
+      btnQuiz.innerHTML = "Finalizar Quiz";
+    } else {
+      btnQuiz.innerHTML = "Próxima Pergunta";
+    }
   }
 
   function proximaPergunta() {
@@ -170,12 +177,12 @@
     });
 
     sessionStorage.RESPOSTAS = JSON.stringify(respostasUsuario);
-    perguntaAtual++;
-    sessionStorage.PERGUNTA_ATUAL = perguntaAtual;
-    if (perguntaAtual >= perguntas.length) {
+    if (perguntaAtual == perguntas.length - 1) {
       finalizarQuiz();
       return;
     }
+    perguntaAtual++;
+    sessionStorage.PERGUNTA_ATUAL = perguntaAtual;
     mostrarPergunta();
   }
 
@@ -217,10 +224,11 @@
 
           window.location = "./dashboard/dashboard.html";
         } else {
+          console.log(resposta);
+
           console.log("Erro ao salvar quiz");
         }
       })
-
       .catch(function (erro) {
         console.log("Erro no fetch:", erro);
       });
