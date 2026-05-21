@@ -28,9 +28,23 @@
             </li>
             <li><a href="../conteudo.html">Conteúdo</a></li>
             <li><a href="../homequiz.html">Quiz</a></li>
+            <li><a href="./index.html" onclick="sair()">Sair</a></li>
           </ul>
         </nav>
       </div>
     </div>
+
+    <div class="dashboard">
+      <div class="top_dashboard_actions">
+        <a href="./dashboard.html">
+          <button class="btn_dash_geral">Dashboard Individuál</button>
+        </a>
+      </div>
+    </div>
   </body>
+  <script>
+    function sair() {
+      sessionStorage.clear();
+    }
+  </script>
 </html>

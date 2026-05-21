@@ -28,12 +28,18 @@
             </li>
             <li><a href="../conteudo.html">Conteúdo</a></li>
             <li><a href="../homequiz.html">Quiz</a></li>
+            <li><a href="../index.html" onclick="sair()">Sair</a></li>
           </ul>
         </nav>
       </div>
     </div>
 
-    <main class="dashboard">
+    <div class="dashboard">
+      <div class="top_dashboard_actions">
+        <a href="./dashboard_geral.html">
+          <button class="btn_dash_geral">Dashboard Geral</button>
+        </a>
+      </div>
       <div class="welcome glass">
         <div>
           <h1>Bem-vindo de volta, <span id="nome_usuario">Jogador</span></h1>
@@ -66,11 +72,14 @@
           <span id="kpi_tempo">0s</span>
         </div>
       </section>
-    </main>
+    </div>
   </body>
 </html>
 
 <script>
+  function sair() {
+    sessionStorage.clear();
+  }
   nome_usuario.innerHTML = sessionStorage.NOME_USUARIO;
 
   let proximaAtualizacao;

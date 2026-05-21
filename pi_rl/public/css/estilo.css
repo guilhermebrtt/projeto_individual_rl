@@ -1101,13 +1101,9 @@ nav ul li a:hover {
 
 .glass {
   background: rgba(255,255,255,0.08);
-
   border: 1px solid rgba(255,255,255,0.12);
-
   backdrop-filter: blur(14px);
-
   border-radius: 24px;
-
   box-shadow:
     0 8px 30px rgba(0,0,0,0.25);
 }
@@ -1142,19 +1138,12 @@ nav ul li a:hover {
 .kpi_card {
   flex: 1;
   min-width: 220px;
-
   padding: 28px;
-
   border-radius: 24px;
-
   backdrop-filter: blur(14px);
-
   background: rgba(255, 255, 255, 0.08);
-
   border: 1px solid rgba(255, 255, 255, 0.12);
-
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
-
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -1180,10 +1169,34 @@ nav ul li a:hover {
 
 .glass {
   backdrop-filter: blur(14px);
-
   background: rgba(255, 255, 255, 0.08);
-
   border: 1px solid rgba(255, 255, 255, 0.12);
-
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+.top_dashboard_actions {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.btn_dash_geral {
+  padding: 14px 26px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #0a2c6a, #0353a4);
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 20px rgba(3, 83, 164, 0.35);
+  transition: 0.3s;
+}
+
+.btn_dash_geral:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #0353a4, #0466c8);
+  box-shadow: 0 8px 24px rgba(4, 102, 200, 0.45);
 }
