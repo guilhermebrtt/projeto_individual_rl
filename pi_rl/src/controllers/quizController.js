@@ -12,13 +12,16 @@ function listarPerguntasQuiz(req, res) {
     });
 }
 
-async function finalizarQuiz(req, res) {
-  var idUsuario = req.body.idUsuario;
-  var pontuacao = req.body.pontuacao;
-  var acertos = req.body.acertos;
-  var erros = req.body.erros;
-  var tempo = req.body.tempo;
-  var respostas = req.body.respostas;
+function finalizarQuiz(req, res) {
+  console.log("BODY RECEBIDO:");
+  console.log(req.body);
+
+  const idUsuario = req.body.idUsuarioServer;
+  const pontuacao = req.body.pontuacaoServer;
+  const acertos = req.body.acertosServer;
+  const erros = req.body.errosServer;
+  const tempo = req.body.tempoServer;
+  const respostas = req.body.respostasServer;
 
   if (
     idUsuario == undefined ||
@@ -28,41 +31,44 @@ async function finalizarQuiz(req, res) {
     tempo == undefined ||
     respostas == undefined
   ) {
-    res.status(400).send("Dados do quiz incompletos!");
+    res.status(400).send("Dados undefined");
     return;
   }
 
-  try {
-    var resultadoTentativa = await quizModel.cadastrarTentativa(
-      idUsuario,
-      pontuacao,
-      acertos,
-      erros,
-      tempo,
-    );
+  quizModel
+    .cadastrarTentativa(idUsuario, pontuacao, acertos, erros, tempo)
 
-    var idTentativa = resultadoTentativa.insertId;
+    .then(function (resultadoTentativa) {
+      const idTentativa = resultadoTentativa.insertId;
+      let promises = [];
 
-    for (let i = 0; i < respostas.length; i++) {
-      await quizModel.cadastrarResposta(
-        idTentativa,
-        respostas[i].idPergunta,
-        respostas[i].respostaMarcada,
-        respostas[i].acertou,
-        respostas[i].tempoPergunta,
-      );
-    }
+      for (let i = 0; i < respostas.length; i++) {
+        const resposta = respostas[i];
 
-    res.status(200).json({
-      mensagem: "Quiz finalizado com sucesso!",
-      idTentativa: idTentativa,
+        promises.push(
+          quizModel.cadastrarResposta(
+            idTentativa,
+            resposta.idPergunta,
+            resposta.respostaMarcada,
+            resposta.acertou ? 1 : 0,
+            0,
+          ),
+        );
+      }
+
+      return Promise.all(promises);
+    })
+
+    .then(function () {
+      res.status(200).send("Quiz salvo com sucesso");
+    })
+
+    .catch(function (erro) {
+      console.log("ERRO NO BACK:");
+      console.log(erro);
+
+      res.status(500).json(erro);
     });
-  } catch (erro) {
-    console.log(erro);
-    console.log("\nHouve um erro ao finalizar o quiz! Erro: ", erro.sqlMessage);
-
-    res.status(500).json(erro.sqlMessage);
-  }
 }
 
 module.exports = {

@@ -6,8 +6,6 @@ function listarPerguntasQuiz(dificuldade) {
     WHERE nivel_dificuldade = '${dificuldade}';
   `;
 
-  console.log(instrucaoSql);
-
   return database.executar(instrucaoSql);
 }
 

@@ -539,7 +539,7 @@ nav ul li a:hover {
 }
 
 .section1_box1_content img:hover{
-    transform: scale(1.03);
+    transform: scale(1.03) rotate(-1deg);
     box-shadow:
     0 25px 50px rgba(24,77,237,0.22);
 }
@@ -879,7 +879,7 @@ nav ul li a:hover {
     width: 75%;
     margin: auto;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
 }
 
 .btn_proxima{
@@ -909,6 +909,35 @@ nav ul li a:hover {
 .btn_proxima:active{
     transform: scale(0.97);
 }
+
+.btn_anterior{
+    padding: 18px 40px;
+    background:
+    linear-gradient(135deg, #00aaff, #004cff);
+    border: none;
+    border-radius: 16px;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.35s;
+    box-shadow:
+    0 0 25px rgba(0,174,255,0.35);
+    margin-bottom: 3%;
+}
+
+.btn_anterior:hover{
+    transform: translateY(-4px) scale(1.04);
+    box-shadow:
+    0 0 40px rgba(0,174,255,0.55);
+    background:
+    linear-gradient(135deg, #00bbff, #005eff);
+}
+
+.btn_anterior:active{
+    transform: scale(0.97);
+}
+
 
 .body_sobre {
   background: #f5f7fb;

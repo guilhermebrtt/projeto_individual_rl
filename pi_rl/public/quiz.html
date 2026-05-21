@@ -28,7 +28,11 @@
     <div id="quiz_container"></div>
 
     <div class="quiz_acoes">
-      <button id="btnQuiz" class="btn_proxima" onclick="proximaPergunta()">
+      <button class="btn_anterior" onclick="perguntaAnterior()">
+        Pergunta Anterior
+      </button>
+
+      <button class="btn_proxima" id="btnQuiz" onclick="proximaPergunta()">
         Próxima Pergunta
       </button>
     </div>
@@ -40,6 +44,7 @@
   let perguntaAtual = 0;
 
   let respostasUsuario = [];
+
   let acertos = 0;
   let erros = 0;
 
@@ -53,34 +58,16 @@
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      dificuldadeServer: dificuldade,
-    }),
   })
     .then(function (resposta) {
-      console.log("Resposta recebida:", resposta);
-
-      if (!resposta.ok) {
-        throw new Error(`Erro HTTP: ${resposta.status}`);
-      }
-
       return resposta.json();
     })
 
     .then(function (dados) {
-      console.log("Dados recebidos:", dados);
-
       perguntas = dados;
 
       if (sessionStorage.PERGUNTA_ATUAL) {
         perguntaAtual = Number(sessionStorage.PERGUNTA_ATUAL);
-      }
-
-      if (perguntaAtual >= perguntas.length) {
-        sessionStorage.removeItem("PERGUNTA_ATUAL");
-        sessionStorage.removeItem("RESPOSTAS");
-
-        perguntaAtual = 0;
       }
 
       if (sessionStorage.RESPOSTAS) {
@@ -91,15 +78,16 @@
     })
 
     .catch(function (erro) {
-      console.log("ERRO:", erro);
+      console.log(erro);
     });
 
   function mostrarPergunta() {
     const pergunta = perguntas[perguntaAtual];
 
-    if (!pergunta) {
-      console.log("Pergunta não encontrada");
-      return;
+    let respostaSalva = "";
+
+    if (respostasUsuario[perguntaAtual]) {
+      respostaSalva = respostasUsuario[perguntaAtual].respostaMarcada;
     }
 
     document.getElementById("quiz_container").innerHTML = `
@@ -110,27 +98,52 @@
         </h3>
 
         <label>
-          <input type="radio" name="alternativa" value="A">
+          <input 
+            type="radio" 
+            name="alternativa" 
+            value="A"
+            ${respostaSalva == "A" ? "checked" : ""}
+          >
           ${pergunta.alternativa_a}
         </label>
 
         <label>
-          <input type="radio" name="alternativa" value="B">
+          <input 
+            type="radio" 
+            name="alternativa" 
+            value="B"
+            ${respostaSalva == "B" ? "checked" : ""}
+          >
           ${pergunta.alternativa_b}
         </label>
 
         <label>
-          <input type="radio" name="alternativa" value="C">
+          <input 
+            type="radio" 
+            name="alternativa" 
+            value="C"
+            ${respostaSalva == "C" ? "checked" : ""}
+          >
           ${pergunta.alternativa_c}
         </label>
 
         <label>
-          <input type="radio" name="alternativa" value="D">
+          <input 
+            type="radio" 
+            name="alternativa" 
+            value="D"
+            ${respostaSalva == "D" ? "checked" : ""}
+          >
           ${pergunta.alternativa_d}
         </label>
 
         <label>
-          <input type="radio" name="alternativa" value="E">
+          <input 
+            type="radio" 
+            name="alternativa" 
+            value="E"
+            ${respostaSalva == "E" ? "checked" : ""}
+          >
           ${pergunta.alternativa_e}
         </label>
 
@@ -139,6 +152,10 @@
       </div>
     `;
 
+    alterarTextoBotao();
+  }
+
+  function alterarTextoBotao() {
     const btnQuiz = document.getElementById("btnQuiz");
 
     if (perguntaAtual == perguntas.length - 1) {
@@ -161,47 +178,67 @@
 
     const pergunta = perguntas[perguntaAtual];
     const respostaUsuario = alternativaSelecionada.value;
+
     let acertou = false;
+
     if (respostaUsuario == pergunta.alternativa_correta) {
-      acertos++;
       acertou = true;
-    } else {
-      erros++;
     }
 
-    respostasUsuario.push({
+    respostasUsuario[perguntaAtual] = {
       idPergunta: pergunta.id_pergunta,
       respostaMarcada: respostaUsuario,
       respostaCorreta: pergunta.alternativa_correta,
       acertou: acertou,
-    });
+    };
 
     sessionStorage.RESPOSTAS = JSON.stringify(respostasUsuario);
+
     if (perguntaAtual == perguntas.length - 1) {
       finalizarQuiz();
       return;
     }
+
     perguntaAtual++;
+
     sessionStorage.PERGUNTA_ATUAL = perguntaAtual;
+
     mostrarPergunta();
   }
 
+  function perguntaAnterior() {
+    if (perguntaAtual > 0) {
+      perguntaAtual--;
+
+      sessionStorage.PERGUNTA_ATUAL = perguntaAtual;
+
+      mostrarPergunta();
+    }
+  }
+
   function finalizarQuiz() {
+    acertos = 0;
+    erros = 0;
+
+    for (let i = 0; i < respostasUsuario.length; i++) {
+      if (respostasUsuario[i].acertou) {
+        acertos++;
+      } else {
+        erros++;
+      }
+    }
+
     const fimQuiz = Date.now();
+
     const tempoTotal = Math.floor((fimQuiz - inicioQuiz) / 1000);
+
     const pontuacao = acertos * 10;
 
-    console.log({
-      idUsuario: sessionStorage.ID_USUARIO,
-      pontuacao: pontuacao,
-      acertos: acertos,
-      erros: erros,
-      tempo: tempoTotal,
-      respostas: respostasUsuario,
-    });
+    console.log("RESPOSTAS:", respostasUsuario);
 
     fetch("/quiz/finalizarQuiz", {
       method: "POST",
+
       headers: {
         "Content-Type": "application/json",
       },
@@ -216,21 +253,34 @@
       }),
     })
       .then(function (resposta) {
-        if (resposta.ok) {
-          console.log("Quiz salvo com sucesso!");
+        console.log("STATUS:", resposta.status);
+        console.log(
+          "id_usuario: ",
+          sessionStorage.ID_USUARIO,
+          "pontuação: ",
+          pontuacao,
+          "acertos: ",
+          acertos,
+          "erros: ",
+          erros,
+          "tempo total: ",
+          tempoTotal,
+          "respostas: ",
+          respostasUsuario,
+        );
 
+        if (resposta.ok) {
           sessionStorage.removeItem("PERGUNTA_ATUAL");
           sessionStorage.removeItem("RESPOSTAS");
 
           window.location = "./dashboard/dashboard.html";
         } else {
-          console.log(resposta);
-
           console.log("Erro ao salvar quiz");
         }
       })
+
       .catch(function (erro) {
-        console.log("Erro no fetch:", erro);
+        console.log("Erro:", erro);
       });
   }
 </script>
