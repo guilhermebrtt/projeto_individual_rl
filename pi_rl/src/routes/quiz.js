@@ -11,8 +11,4 @@ router.post("/finalizarQuiz", function (req, res) {
   quizController.finalizarQuiz(req, res);
 });
 
-router.get("/buscarKPIs/:idUsuario", function (req, res) {
-  quizController.buscarKPIs(req, res);
-});
-
 module.exports = router;

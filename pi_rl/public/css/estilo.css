@@ -1102,10 +1102,17 @@ nav ul li a:hover {
   min-height: 100vh;
 }
 
+.header_dash{
+  width: 100%;
+  margin: 40px auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .dashboard {
   width: 90%;
   margin: 40px auto;
-
   display: flex;
   flex-direction: column;
   gap: 30px;
@@ -1211,4 +1218,45 @@ nav ul li a:hover {
   transform: translateY(-2px);
   background: linear-gradient(135deg, #0353a4, #0466c8);
   box-shadow: 0 8px 24px rgba(4, 102, 200, 0.45);
+}
+
+.filtro_dashboard {
+  padding: 20px;
+  margin-top: 80px; 
+  gap: 20px;
+  border-radius: 18px;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filtro_dashboard h3 {
+  color: white;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.botoes_filtro {
+  display: flex;
+  gap: 12px;
+}
+
+.botoes_filtro button {
+  padding: 10px 22px;
+  border: none;
+  border-radius: 12px;
+  background: #0f2d62;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.botoes_filtro button:hover {
+  background: #1d4ea3;
+  transform: translateY(-2px);
 }
