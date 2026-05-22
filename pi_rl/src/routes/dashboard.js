@@ -11,4 +11,8 @@ router.get("/acertos-erros/:idUsuario/:dificuldade", function (req, res) {
   dashboardController.buscarAcertosErros(req, res);
 });
 
+router.get("/categoriaDestaque/:idUsuario", function (req, res) {
+  dashboardController.buscarCategoriaDestaque(req, res);
+});
+
 module.exports = router;

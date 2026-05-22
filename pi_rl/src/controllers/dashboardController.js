@@ -32,7 +32,22 @@ function buscarAcertosErros(req, res) {
     });
 }
 
+function buscarCategoriaDestaque(req, res) {
+  const idUsuario = req.params.idUsuario;
+  dashboardModel
+    .buscarCategoriaDestaque(idUsuario)
+    .then(function (resultado) {
+      console.log("Resultado Categoria Destaque:", resultado);
+      res.status(200).json(resultado);
+    })
+    .catch(function (erro) {
+      console.log("Erro ao buscar categoria destaque:", erro);
+      res.status(500).json(erro.sqlMessage);
+    });
+}
+
 module.exports = {
   buscarKpis,
   buscarAcertosErros,
+  buscarCategoriaDestaque,
 };

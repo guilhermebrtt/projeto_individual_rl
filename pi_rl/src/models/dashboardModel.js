@@ -88,7 +88,40 @@ function buscarAcertosErros(idUsuario, dificuldade) {
   return database.executar(instrucaoSql);
 }
 
+function buscarCategoriaDestaque(idUsuario) {
+  const instrucaoSql = `
+    SELECT
+      c.nome_categoria,
+
+      ROUND(
+        AVG(
+          CASE
+            WHEN ru.acertou = 1 THEN 100
+            ELSE 0
+          END
+        ),
+      1) AS aproveitamento
+
+    FROM resposta_usuario ru
+
+    INNER JOIN tentativa_quiz tq
+    ON tq.id_tentativa = ru.fk_tentativa
+
+    INNER JOIN pergunta p
+    ON p.id_pergunta = ru.fk_pergunta
+
+    INNER JOIN categoria c
+    ON c.id_categoria = p.fk_categoria
+
+    WHERE tq.fk_usuario = ${idUsuario}
+
+    GROUP BY c.nome_categoria;
+  `;
+  return database.executar(instrucaoSql);
+}
+
 module.exports = {
   buscarKpis,
   buscarAcertosErros,
+  buscarCategoriaDestaque,
 };
