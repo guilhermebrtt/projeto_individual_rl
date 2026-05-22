@@ -38,6 +38,7 @@ function cadastrarResposta(
   respostaMarcada,
   acertou,
   tempoPergunta,
+  dificuldade,
 ) {
   var instrucaoSql = `
     INSERT INTO resposta_usuario
@@ -47,6 +48,7 @@ function cadastrarResposta(
       resposta_marcada,
       acertou,
       tempo_pergunta
+      dificuldade
     )
     VALUES
     (
@@ -55,6 +57,7 @@ function cadastrarResposta(
       '${respostaMarcada}',
       ${acertou},
       ${tempoPergunta}
+      ${dificuldade}
     );
   `;
 
@@ -65,7 +68,7 @@ function buscarKPIs(idUsuario) {
   var instrucaoSql = `
   
     SELECT
-    COUNT(id_tentativa),
+    COUNT(id_tentativa) AS quizzes,
 
     MAX(pontuacao) AS melhor_pontuacao,
 

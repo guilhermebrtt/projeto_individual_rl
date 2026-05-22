@@ -77,6 +77,37 @@
 </html>
 
 <script>
+  nome_usuario.innerHTML = sessionStorage.NOME_USUARIO;
+
+  const idUsuario = sessionStorage.ID_USUARIO;
+
+  fetch(`/quiz/buscarKPIs/${idUsuario}`)
+    .then(function (resposta) {
+      return resposta.json();
+    })
+
+    .then(function (dados) {
+      const kpi = dados[0];
+      document.getElementById("kpi_quizzes").innerHTML = `${kpi.quizzes}`;
+
+      document.getElementById("kpi_melhor_pontuacao").innerHTML =
+        `${kpi.melhor_pontuacao} pts`;
+
+      document.getElementById("kpi_aproveitamento").innerHTML =
+        `${kpi.media_aproveitamento}%`;
+
+      const minutos = Math.floor(kpi.tempo_medio / 60);
+
+      const segundos = Math.floor(kpi.tempo_medio % 60);
+
+      document.getElementById("kpi_tempo").innerHTML =
+        `${minutos}m ${segundos}s`;
+    })
+
+    .catch(function (erro) {
+      console.log("Erro ao buscar KPIs:", erro);
+    });
+
   function sair() {
     sessionStorage.clear();
   }
