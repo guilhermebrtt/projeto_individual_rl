@@ -61,6 +61,41 @@ function buscarKpis(idUsuario, dificuldade) {
   return database.executar(instrucaoSql);
 }
 
+function buscarAcertosErros(idUsuario, dificuldade) {
+  let instrucaoSql = "";
+
+  if (dificuldade == "geral") {
+    instrucaoSql = `
+      SELECT
+        SUM(CASE WHEN acertou = 1 THEN 1 ELSE 0 END) AS acertos,
+        SUM(CASE WHEN acertou = 0 THEN 1 ELSE 0 END) AS erros
+      FROM resposta_usuario ru
+      INNER JOIN tentativa_quiz tq
+      ON tq.id_tentativa = ru.fk_tentativa
+      WHERE tq.fk_usuario = ${idUsuario};
+    `;
+  } else {
+    instrucaoSql = `
+      SELECT
+        SUM(CASE WHEN ru.acertou = 1 THEN 1 ELSE 0 END) AS acertos,
+        SUM(CASE WHEN ru.acertou = 0 THEN 1 ELSE 0 END) AS erros
+      FROM resposta_usuario ru
+
+      INNER JOIN tentativa_quiz tq
+      ON tq.id_tentativa = ru.fk_tentativa
+
+      INNER JOIN pergunta p
+      ON p.id_pergunta = ru.fk_pergunta
+
+      WHERE tq.fk_usuario = ${idUsuario}
+      AND p.nivel_dificuldade = '${dificuldade}';
+    `;
+  }
+
+  return database.executar(instrucaoSql);
+}
+
 module.exports = {
   buscarKpis,
+  buscarAcertosErros,
 };

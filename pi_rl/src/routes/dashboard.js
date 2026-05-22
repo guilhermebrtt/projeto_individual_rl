@@ -7,4 +7,8 @@ router.get("/kpis/:idUsuario/:dificuldade", function (req, res) {
   dashboardController.buscarKpis(req, res);
 });
 
+router.get("/acertosErros/:idUsuario/:dificuldade", function (req, res) {
+  dashboardController.buscarAcertosErros(req, res);
+});
+
 module.exports = router;
