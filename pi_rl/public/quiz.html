@@ -42,16 +42,21 @@
 <script>
   let perguntas = [];
   let perguntaAtual = 0;
-
   let respostasUsuario = [];
-
   let acertos = 0;
   let erros = 0;
 
   const parametros = new URLSearchParams(window.location.search);
   const dificuldade = parametros.get("dificuldade");
 
-  const inicioQuiz = Date.now();
+  let inicioQuiz;
+
+  if (sessionStorage.INICIO_QUIZ) {
+    inicioQuiz = Number(sessionStorage.INICIO_QUIZ);
+  } else {
+    inicioQuiz = Date.now();
+    sessionStorage.INICIO_QUIZ = inicioQuiz;
+  }
 
   fetch(`/quiz/listarPerguntasQuiz/${dificuldade}`, {
     method: "POST",
@@ -65,27 +70,28 @@
 
     .then(function (dados) {
       perguntas = dados;
-
       if (sessionStorage.PERGUNTA_ATUAL) {
         perguntaAtual = Number(sessionStorage.PERGUNTA_ATUAL);
       }
-
       if (sessionStorage.RESPOSTAS) {
         respostasUsuario = JSON.parse(sessionStorage.RESPOSTAS);
       }
-
       mostrarPergunta();
     })
-
     .catch(function (erro) {
       console.log(erro);
     });
 
   function mostrarPergunta() {
+    if (perguntaAtual >= perguntas.length) {
+      perguntaAtual = 0;
+
+      sessionStorage.removeItem("PERGUNTA_ATUAL");
+      sessionStorage.removeItem("RESPOSTAS");
+    }
+
     const pergunta = perguntas[perguntaAtual];
-
     let respostaSalva = "";
-
     if (respostasUsuario[perguntaAtual]) {
       respostaSalva = respostasUsuario[perguntaAtual].respostaMarcada;
     }
@@ -96,7 +102,6 @@
         <h3>
           ${perguntaAtual + 1}-) ${pergunta.pergunta}
         </h3>
-
         <label>
           <input 
             type="radio" 
@@ -106,7 +111,6 @@
           >
           ${pergunta.alternativa_a}
         </label>
-
         <label>
           <input 
             type="radio" 
@@ -116,7 +120,6 @@
           >
           ${pergunta.alternativa_b}
         </label>
-
         <label>
           <input 
             type="radio" 
@@ -126,7 +129,6 @@
           >
           ${pergunta.alternativa_c}
         </label>
-
         <label>
           <input 
             type="radio" 
@@ -136,7 +138,6 @@
           >
           ${pergunta.alternativa_d}
         </label>
-
         <label>
           <input 
             type="radio" 
@@ -146,9 +147,7 @@
           >
           ${pergunta.alternativa_e}
         </label>
-
         <div id="mensagem_quiz"></div>
-
       </div>
     `;
 
@@ -169,7 +168,6 @@
     const alternativaSelecionada = document.querySelector(
       'input[name="alternativa"]:checked',
     );
-
     if (!alternativaSelecionada) {
       document.getElementById("mensagem_quiz").innerHTML =
         "Selecione uma alternativa antes de continuar.";
@@ -178,7 +176,6 @@
 
     const pergunta = perguntas[perguntaAtual];
     const respostaUsuario = alternativaSelecionada.value;
-
     let acertou = false;
 
     if (respostaUsuario == pergunta.alternativa_correta) {
@@ -198,20 +195,15 @@
       finalizarQuiz();
       return;
     }
-
     perguntaAtual++;
-
     sessionStorage.PERGUNTA_ATUAL = perguntaAtual;
-
     mostrarPergunta();
   }
 
   function perguntaAnterior() {
     if (perguntaAtual > 0) {
       perguntaAtual--;
-
       sessionStorage.PERGUNTA_ATUAL = perguntaAtual;
-
       mostrarPergunta();
     }
   }
@@ -219,7 +211,6 @@
   function finalizarQuiz() {
     acertos = 0;
     erros = 0;
-
     for (let i = 0; i < respostasUsuario.length; i++) {
       if (respostasUsuario[i].acertou) {
         acertos++;
@@ -229,16 +220,11 @@
     }
 
     const fimQuiz = Date.now();
-
     const tempoTotal = Math.floor((fimQuiz - inicioQuiz) / 1000);
-
     const pontuacao = acertos * 10;
-
-    console.log("RESPOSTAS:", respostasUsuario);
 
     fetch("/quiz/finalizarQuiz", {
       method: "POST",
-
       headers: {
         "Content-Type": "application/json",
       },
@@ -255,24 +241,10 @@
     })
       .then(function (resposta) {
         console.log("STATUS:", resposta.status);
-        console.log(
-          "id_usuario: ",
-          sessionStorage.ID_USUARIO,
-          "pontuação: ",
-          pontuacao,
-          "acertos: ",
-          acertos,
-          "erros: ",
-          erros,
-          "tempo total: ",
-          tempoTotal,
-          "respostas: ",
-          respostasUsuario,
-        );
-
         if (resposta.ok) {
           sessionStorage.removeItem("PERGUNTA_ATUAL");
           sessionStorage.removeItem("RESPOSTAS");
+          sessionStorage.removeItem("INICIO_QUIZ");
 
           window.location = "./dashboard/dashboard.html";
         } else {

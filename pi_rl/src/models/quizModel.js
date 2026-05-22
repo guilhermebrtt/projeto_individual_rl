@@ -9,7 +9,14 @@ function listarPerguntasQuiz(dificuldade) {
   return database.executar(instrucaoSql);
 }
 
-function cadastrarTentativa(idUsuario, pontuacao, acertos, erros, tempo) {
+function cadastrarTentativa(
+  idUsuario,
+  pontuacao,
+  acertos,
+  erros,
+  tempo,
+  dificuldade,
+) {
   var instrucaoSql = `
     INSERT INTO tentativa_quiz
     (
@@ -17,7 +24,8 @@ function cadastrarTentativa(idUsuario, pontuacao, acertos, erros, tempo) {
       pontuacao,
       qtd_acertos,
       qtd_erros,
-      tempo_total
+      tempo_total,
+      dificuldade
     )
     VALUES
     (
@@ -25,7 +33,8 @@ function cadastrarTentativa(idUsuario, pontuacao, acertos, erros, tempo) {
       ${pontuacao},
       ${acertos},
       ${erros},
-      ${tempo}
+      ${tempo},
+      '${dificuldade}'
     );
   `;
 
@@ -38,7 +47,6 @@ function cadastrarResposta(
   respostaMarcada,
   acertou,
   tempoPergunta,
-  dificuldade,
 ) {
   var instrucaoSql = `
     INSERT INTO resposta_usuario
@@ -48,7 +56,6 @@ function cadastrarResposta(
       resposta_marcada,
       acertou,
       tempo_pergunta
-      dificuldade
     )
     VALUES
     (
@@ -57,7 +64,6 @@ function cadastrarResposta(
       '${respostaMarcada}',
       ${acertou},
       ${tempoPergunta}
-      ${dificuldade}
     );
   `;
 

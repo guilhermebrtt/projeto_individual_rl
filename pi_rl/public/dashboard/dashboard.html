@@ -33,24 +33,33 @@
         </nav>
       </div>
     </div>
-
     <div class="dashboard">
       <div class="top_dashboard_actions">
         <a href="./dashboard_geral.html">
           <button class="btn_dash_geral">Dashboard Geral</button>
         </a>
       </div>
-      <div class="welcome glass">
-        <div>
-          <h1>Bem-vindo de volta, <span id="nome_usuario">Jogador</span></h1>
+      <div class="header_dash">
+        <div class="welcome glass">
+          <div>
+            <h1>Bem-vindo de volta, <span id="nome_usuario">Jogador</span></h1>
 
-          <p>
-            Confira suas estatísticas, desempenho nos quizzes e evolução dentro
-            da plataforma.
-          </p>
+            <p>
+              Confira suas estatísticas, desempenho nos quizzes e evolução
+              dentro da plataforma.
+            </p>
+          </div>
+        </div>
+        <div class="filtro_dashboard glass">
+          <h3>Filtrar por dificuldade</h3>
+          <div class="botoes_filtro">
+            <button onclick="filtrarDashboard('facil')">Fácil</button>
+            <button onclick="filtrarDashboard('medio')">Médio</button>
+            <button onclick="filtrarDashboard('dificil')">Difícil</button>
+            <button onclick="filtrarDashboard('geral')">Geral</button>
+          </div>
         </div>
       </div>
-
       <section class="kpis_dashboard">
         <div class="kpi_card glass">
           <h3>Quizzes Realizados</h3>
@@ -79,38 +88,40 @@
 <script>
   nome_usuario.innerHTML = sessionStorage.NOME_USUARIO;
 
-  const idUsuario = sessionStorage.ID_USUARIO;
-
-  fetch(`/quiz/buscarKPIs/${idUsuario}`)
-    .then(function (resposta) {
-      return resposta.json();
-    })
-
-    .then(function (dados) {
-      const kpi = dados[0];
-      document.getElementById("kpi_quizzes").innerHTML = `${kpi.quizzes}`;
-
-      document.getElementById("kpi_melhor_pontuacao").innerHTML =
-        `${kpi.melhor_pontuacao} pts`;
-
-      document.getElementById("kpi_aproveitamento").innerHTML =
-        `${kpi.media_aproveitamento}%`;
-
-      const minutos = Math.floor(kpi.tempo_medio / 60);
-
-      const segundos = Math.floor(kpi.tempo_medio % 60);
-
-      document.getElementById("kpi_tempo").innerHTML =
-        `${minutos}m ${segundos}s`;
-    })
-
-    .catch(function (erro) {
-      console.log("Erro ao buscar KPIs:", erro);
-    });
-
   function sair() {
     sessionStorage.clear();
   }
+
+  function filtrarDashboard(dificuldade) {
+    console.log("Filtro selecionado:", dificuldade);
+
+    fetch(`/dashboard/kpis/${sessionStorage.ID_USUARIO}/${dificuldade}`)
+      .then(function (resposta) {
+        if (!resposta.ok) {
+          throw new Error("Erro ao buscar dados");
+        }
+
+        return resposta.json();
+      })
+
+      .then(function (dados) {
+        console.log("Dados filtrados:", dados);
+
+        const kpi = dados[0];
+
+        kpi_quizzes.innerHTML = kpi.quizzes;
+        kpi_aproveitamento.innerHTML = kpi.mediaAproveitamento + "%";
+        kpi_melhor_pontuacao.innerHTML = kpi.melhorPontuacao;
+        kpi_tempo.innerHTML = Number(kpi.tempoMedio).toFixed(0) + "s";
+      })
+
+      .catch(function (erro) {
+        console.log("Erro:", erro);
+      });
+  }
+
+  filtrarDashboard("geral");
+
   nome_usuario.innerHTML = sessionStorage.NOME_USUARIO;
 
   let proximaAtualizacao;
