@@ -6,7 +6,7 @@
     <title>Dashboard</title>
 
     <script src="../js/sessao.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="../css/estilo.css" />
     <link rel="icon" href="../assets/imgs/logo.png" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
@@ -81,6 +81,10 @@
           <span id="kpi_tempo">0m 0s</span>
         </div>
       </section>
+      <div class="grafico_card glass">
+        <h3>Acertos vs Erros</h3>
+        <canvas id="graficoRosquinha"></canvas>
+      </div>
     </div>
   </body>
 </html>
@@ -124,49 +128,32 @@
 
   nome_usuario.innerHTML = sessionStorage.NOME_USUARIO;
 
-  let proximaAtualizacao;
+  fetch(`/dashboard/acertos-erros/${sessionStorage.ID_USUARIO}/geral`)
+    .then(function (resposta) {
+      return resposta.json();
+    })
+    .then(function (dados) {
+      console.log(dados);
+      const info = dados[0];
 
-  window.onload = exibirAquariosDoUsuario();
+      const ctx = document.getElementById("graficoRosquinha");
 
-  function exibirAquariosDoUsuario() {
-    var aquarios = JSON.parse(sessionStorage.AQUARIOS);
-    aquarios.forEach((item) => {
-      document.getElementById("btnAquario").innerHTML += `
-            <button class="btn-chart" onclick="exibirAquario(${item.id})" id="btnAquario${item.id}">${item.descricao}</button>
-            `;
+      new Chart(ctx, {
+        type: "doughnut",
 
-      document.getElementById("graficos").innerHTML += `
-                <div id="grafico${item.id}" class="display-none">
-                    <h3 class="tituloGraficos">
-                        <span id="tituloAquario${item.id}">${item.descricao}</span>
-                    </h3>
-                    <div class="graph">
-                        <canvas id="myChartCanvas${item.id}"></canvas>
-                    </div>
-                    <div class="label-captura">
-                        <p id="avisoCaptura${item.id}" style="color: white"></p>
-                    </div>
-                </div>
-            `;
+        data: {
+          labels: ["Acertos", "Erros"],
 
-      obterDadosGrafico(item.id);
+          datasets: [
+            {
+              data: [info.acertos, info.erros],
+
+              backgroundColor: ["#3b82f6", "#ef4444"],
+            },
+          ],
+        },
+      });
     });
-
-    if (aquarios.length > 0) {
-      exibirAquario(aquarios[0].id);
-    }
-  }
-
-  function alterarTitulo(idAquario) {
-    var tituloAquario = document.getElementById(`tituloAquario${idAquario}`);
-    var descricao = JSON.parse(sessionStorage.AQUARIOS).find(
-      (item) => item.id == idAquario,
-    ).descricao;
-    tituloAquario.innerHTML =
-      "Últimas medidas de Temperatura e Umidade do <span style='color: #e6005a'>" +
-      descricao +
-      "</span>";
-  }
 
   function exibirAquario(idAquario) {
     let todosOsGraficos = JSON.parse(sessionStorage.AQUARIOS);

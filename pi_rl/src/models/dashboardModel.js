@@ -67,30 +67,23 @@ function buscarAcertosErros(idUsuario, dificuldade) {
   if (dificuldade == "geral") {
     instrucaoSql = `
       SELECT
-        SUM(CASE WHEN acertou = 1 THEN 1 ELSE 0 END) AS acertos,
-        SUM(CASE WHEN acertou = 0 THEN 1 ELSE 0 END) AS erros
-      FROM resposta_usuario ru
-      INNER JOIN tentativa_quiz tq
-      ON tq.id_tentativa = ru.fk_tentativa
-      WHERE tq.fk_usuario = ${idUsuario};
+        SUM(qtd_acertos) AS acertos,
+        SUM(qtd_erros) AS erros
+      FROM tentativa_quiz
+      WHERE fk_usuario = ${idUsuario};
     `;
   } else {
     instrucaoSql = `
       SELECT
-        SUM(CASE WHEN ru.acertou = 1 THEN 1 ELSE 0 END) AS acertos,
-        SUM(CASE WHEN ru.acertou = 0 THEN 1 ELSE 0 END) AS erros
-      FROM resposta_usuario ru
-
-      INNER JOIN tentativa_quiz tq
-      ON tq.id_tentativa = ru.fk_tentativa
-
-      INNER JOIN pergunta p
-      ON p.id_pergunta = ru.fk_pergunta
-
-      WHERE tq.fk_usuario = ${idUsuario}
-      AND p.nivel_dificuldade = '${dificuldade}';
+        SUM(qtd_acertos) AS acertos,
+        SUM(qtd_erros) AS erros
+      FROM tentativa_quiz
+      WHERE fk_usuario = ${idUsuario}
+      AND dificuldade = '${dificuldade}';
     `;
   }
+
+  console.log(instrucaoSql);
 
   return database.executar(instrucaoSql);
 }
