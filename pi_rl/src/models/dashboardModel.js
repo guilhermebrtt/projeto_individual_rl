@@ -6,17 +6,21 @@ function buscarKpis(idUsuario, dificuldade) {
   if (dificuldade == "geral") {
     instrucaoSql = `
       SELECT 
-        COUNT(id_tentativa) AS quizzes,
+        IFNULL(COUNT(id_tentativa), 0) AS quizzes,
 
-        MAX(pontuacao) AS melhorPontuacao,
+        IFNULL(MAX(pontuacao), 0) AS melhorPontuacao,
 
-        ROUND(
-          AVG(
-            (qtd_acertos / (qtd_acertos + qtd_erros)) * 100
-          ),
-        1) AS mediaAproveitamento,
+        IFNULL(
+          ROUND(
+            AVG(
+              (qtd_acertos / (qtd_acertos + qtd_erros)) * 100
+            ),
+          1),
+        0) AS mediaAproveitamento,
 
-        ROUND(AVG(tempo_total), 1) AS tempoMedio
+        IFNULL(
+          ROUND(AVG(tempo_total), 1),
+        0) AS tempoMedio
 
       FROM tentativa_quiz
 
@@ -25,17 +29,21 @@ function buscarKpis(idUsuario, dificuldade) {
   } else {
     instrucaoSql = `
       SELECT 
-        COUNT(DISTINCT tq.id_tentativa) AS quizzes,
+        IFNULL(COUNT(DISTINCT tq.id_tentativa), 0) AS quizzes,
 
-        MAX(tq.pontuacao) AS melhorPontuacao,
+        IFNULL(MAX(tq.pontuacao), 0) AS melhorPontuacao,
 
-        ROUND(
-          AVG(
-            (tq.qtd_acertos / (tq.qtd_acertos + tq.qtd_erros)) * 100
-          ),
-        1) AS mediaAproveitamento,
+        IFNULL(
+          ROUND(
+            AVG(
+              (tq.qtd_acertos / (tq.qtd_acertos + tq.qtd_erros)) * 100
+            ),
+          1),
+        0) AS mediaAproveitamento,
 
-        ROUND(AVG(tq.tempo_total), 1) AS tempoMedio
+        IFNULL(
+          ROUND(AVG(tq.tempo_total), 1),
+        0) AS tempoMedio
 
       FROM tentativa_quiz tq
 
