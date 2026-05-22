@@ -71,7 +71,25 @@ function finalizarQuiz(req, res) {
     });
 }
 
+function buscarKPIs(req, res) {
+  var idUsuario = req.params.idUsuario;
+
+  quizModel
+    .buscarKPIs(idUsuario)
+
+    .then(function (resultado) {
+      res.json(resultado);
+    })
+
+    .catch(function (erro) {
+      console.log(erro);
+
+      res.status(500).json(erro.sqlMessage);
+    });
+}
+
 module.exports = {
   listarPerguntasQuiz,
   finalizarQuiz,
+  buscarKPIs,
 };
