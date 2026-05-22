@@ -61,8 +61,35 @@ function cadastrarResposta(
   return database.executar(instrucaoSql);
 }
 
+function buscarKPIs(idUsuario) {
+  var instrucaoSql = `
+  
+    SELECT
+    COUNT(id_tentativa),
+
+    MAX(pontuacao) AS melhor_pontuacao,
+
+    ROUND(
+      AVG(
+        (qtd_acertos / (qtd_acertos + qtd_erros)) * 100
+      ),
+      1
+    ) AS media_aproveitamento,
+
+    ROUND(AVG(tempo_total), 1) AS tempo_medio
+
+    FROM tentativa_quiz
+
+    WHERE fk_usuario = ${idUsuario};
+
+  `;
+
+  return database.executar(instrucaoSql);
+}
+
 module.exports = {
   listarPerguntasQuiz,
   cadastrarTentativa,
   cadastrarResposta,
+  buscarKPIs,
 };
