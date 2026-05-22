@@ -1101,23 +1101,20 @@ nav ul li a:hover {
   color: white;
   min-height: 100vh;
 }
-
-.header_dash{
-  width: 100%;
-  margin: 40px auto;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
 .dashboard {
   width: 90%;
-  margin: 40px auto;
+  margin: 0px auto;
   display: flex;
   flex-direction: column;
   gap: 30px;
 }
-
+.header_dash{
+  width: 100%;
+  margin-top: -70px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 .glass {
   background: rgba(255,255,255,0.08);
   border: 1px solid rgba(255,255,255,0.12);
@@ -1150,7 +1147,6 @@ nav ul li a:hover {
   width: 100%;
   display: flex;
   gap: 25px;
-  margin-top: 40px;
   flex-wrap: wrap;
 }
 
@@ -1166,7 +1162,6 @@ nav ul li a:hover {
   display: flex;
   flex-direction: column;
   gap: 12px;
-
   transition: 0.3s;
 }
 
