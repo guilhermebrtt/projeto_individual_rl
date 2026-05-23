@@ -142,10 +142,12 @@
         const kpi = dados[0];
         kpi_quizzes.innerHTML = kpi.quizzes || 0;
         kpi_aproveitamento.innerHTML = (kpi.mediaAproveitamento || 0) + "%";
-
         kpi_melhor_pontuacao.innerHTML = kpi.melhorPontuacao || 0;
 
-        kpi_tempo.innerHTML = Number(kpi.tempoMedio || 0).toFixed(0) + "s";
+        const tempoTotal = Number(kpi.tempoMedio || 0);
+        const minutos = Math.floor(tempoTotal / 60);
+        const segundos = tempoTotal % 60;
+        kpi_tempo.innerHTML = `${minutos}m ${segundos}s`;
       })
       .catch(function (erro) {
         console.log("Erro:", erro);
