@@ -1196,8 +1196,9 @@ nav ul li a:hover {
 }
 
 .btn_dash_geral {
-  padding: 12px 24px;
+  padding: 10px 24px;
   margin-top: -20px;
+  margin-bottom: 10px;
   border: none;
   border-radius: 14px;
   background: linear-gradient(135deg, #0a2c6a, #0353a4);
@@ -1290,7 +1291,7 @@ nav ul li a:hover {
 
 .grafico_card {
   flex: 1;
-  max-width: 420px;
+  max-width: 440px;
   padding: 25px 200px;
   border-radius: 20px;
 }
@@ -1331,7 +1332,7 @@ nav ul li a:hover {
 .dash_grafico{
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: space-between;
   gap: 25px;
   margin-bottom: 25px;
 }
