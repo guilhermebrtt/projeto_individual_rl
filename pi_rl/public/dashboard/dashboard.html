@@ -144,9 +144,9 @@
         kpi_aproveitamento.innerHTML = (kpi.mediaAproveitamento || 0) + "%";
         kpi_melhor_pontuacao.innerHTML = kpi.melhorPontuacao || 0;
 
-        const tempoTotal = Number(kpi.tempoMedio || 0);
-        const minutos = Math.floor(tempoTotal / 60);
-        const segundos = tempoTotal % 60;
+        let tempoTotal = Number(kpi.tempoMedio || 0);
+        let minutos = Math.floor(tempoTotal / 60);
+        let segundos = tempoTotal % 60;
         kpi_tempo.innerHTML = `${minutos}m ${segundos}s`;
       })
       .catch(function (erro) {
@@ -245,7 +245,7 @@
   }
 
   function atualizarBotaoResultado(dificuldade) {
-    const botao = document.querySelector(".btn_dash_resultado");
+    let botao = document.querySelector(".btn_dash_resultado");
 
     if (dificuldade == "geral") {
       botao.disabled = false;
@@ -276,8 +276,8 @@
     .then((res) => res.json())
 
     .then((dados) => {
-      const labels = [];
-      const valores = [];
+      let labels = [];
+      let valores = [];
       for (let i = 0; i < dados.length; i++) {
         labels.push(dados[i].nome_categoria.toUpperCase());
 
@@ -425,7 +425,6 @@
     let todosOsGraficos = JSON.parse(sessionStorage.AQUARIOS);
 
     for (i = 0; i < todosOsGraficos.length; i++) {
-      // exibindo - ou não - o gráfico
       if (todosOsGraficos[i].id != idAquario) {
         let elementoAtual = document.getElementById(
           `grafico${todosOsGraficos[i].id}`,
@@ -435,7 +434,6 @@
         }
         elementoAtual.classList.add("display-none");
 
-        // alterando estilo do botão
         let btnAtual = document.getElementById(
           `btnAquario${todosOsGraficos[i].id}`,
         );
