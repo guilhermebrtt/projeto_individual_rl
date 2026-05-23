@@ -48,8 +48,9 @@ function buscarCategoriaDestaque(req, res) {
 
 function analisarResultado(req, res) {
   const idUsuario = req.params.idUsuario;
+  const dificuldade = req.params.dificuldade;
   dashboardModel
-    .analisarResultado(idUsuario)
+    .analisarResultado(idUsuario, dificuldade)
     .then(function (resultado) {
       res.json(resultado);
     })

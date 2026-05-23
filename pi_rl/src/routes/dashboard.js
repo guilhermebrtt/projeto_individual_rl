@@ -15,7 +15,7 @@ router.get("/categoriaDestaque/:idUsuario", function (req, res) {
   dashboardController.buscarCategoriaDestaque(req, res);
 });
 
-router.get("/analisarResultado/:idUsuario", function (req, res) {
+router.get("/analisarResultado/:idUsuario/:dificuldade", function (req, res) {
   dashboardController.analisarResultado(req, res);
 });
 

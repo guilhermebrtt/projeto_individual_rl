@@ -128,12 +128,20 @@ function buscarCategoriaDestaque(idUsuario) {
   return database.executar(instrucaoSql);
 }
 
-function analisarResultado(idUsuario) {
+function analisarResultado(idUsuario, dificuldade) {
   const instrucaoSql = `
     SELECT
       p.pergunta,
+
       ru.resposta_marcada,
       p.alternativa_correta,
+
+      p.alternativa_a,
+      p.alternativa_b,
+      p.alternativa_c,
+      p.alternativa_d,
+      p.alternativa_e,
+
       ru.acertou
 
     FROM resposta_usuario ru
@@ -141,13 +149,17 @@ function analisarResultado(idUsuario) {
     INNER JOIN pergunta p
     ON ru.fk_pergunta = p.id_pergunta
 
-    INNER JOIN tentativa_quiz tq
-    ON ru.fk_tentativa = tq.id_tentativa
-
-    WHERE tq.fk_usuario = ${idUsuario}
-
-    ORDER BY ru.id_resposta DESC;
+    WHERE ru.fk_tentativa = (
+      SELECT id_tentativa
+      FROM tentativa_quiz
+      WHERE fk_usuario = ${idUsuario}
+      AND dificuldade = '${dificuldade}'
+      ORDER BY id_tentativa DESC
+      LIMIT 1
+    );
   `;
+
+  console.log(instrucaoSql);
 
   return database.executar(instrucaoSql);
 }

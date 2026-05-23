@@ -85,7 +85,11 @@
           <canvas id="graficoRosquinha"></canvas>
           <div class="top_dashboard_actions">
             <a href="">
-              <button type="button" class="btn_dash_resultado">
+              <button
+                type="button"
+                class="btn_dash_resultado"
+                onclick="abrirModalResultado(event)"
+              >
                 Analisar Resultado
               </button>
             </a>
@@ -97,18 +101,34 @@
         </div>
       </div>
     </div>
+
+    <div id="modalResultado" class="modal_resultado">
+      <div class="modal_conteudo glass">
+        <div class="top_modal">
+          <h2>Análise do Quiz</h2>
+
+          <button onclick="fecharModalResultado()">✖</button>
+        </div>
+
+        <div id="lista_resultados"></div>
+      </div>
+    </div>
   </body>
 </html>
 
 <script>
   nome_usuario.innerHTML = sessionStorage.NOME_USUARIO;
-  let graficoRosquinha;
+
+  let dificuldadeAtual = "geral";
+  let graficoRosquinha = null;
 
   function sair() {
     sessionStorage.clear();
   }
 
   function filtrarDashboard(dificuldade) {
+    dificuldadeAtual = dificuldade;
+
     console.log("Filtro selecionado:", dificuldade);
 
     fetch(`/dashboard/kpis/${sessionStorage.ID_USUARIO}/${dificuldade}`)
@@ -116,25 +136,25 @@
         if (!resposta.ok) {
           throw new Error("Erro ao buscar dados");
         }
-
         return resposta.json();
       })
-
       .then(function (dados) {
-        console.log("Dados filtrados:", dados);
-
         const kpi = dados[0];
+        kpi_quizzes.innerHTML = kpi.quizzes || 0;
+        kpi_aproveitamento.innerHTML = (kpi.mediaAproveitamento || 0) + "%";
 
-        kpi_quizzes.innerHTML = kpi.quizzes;
-        kpi_aproveitamento.innerHTML = kpi.mediaAproveitamento + "%";
-        kpi_melhor_pontuacao.innerHTML = kpi.melhorPontuacao;
-        kpi_tempo.innerHTML = Number(kpi.tempoMedio).toFixed(0) + "s";
+        kpi_melhor_pontuacao.innerHTML = kpi.melhorPontuacao || 0;
+
+        kpi_tempo.innerHTML = Number(kpi.tempoMedio || 0).toFixed(0) + "s";
       })
-
       .catch(function (erro) {
         console.log("Erro:", erro);
       });
+    atualizarGraficoAcertosErros(dificuldade);
+    atualizarBotaoResultado(dificuldade);
+  }
 
+  function atualizarGraficoAcertosErros(dificuldade) {
     fetch(
       `/dashboard/acertos-erros/${sessionStorage.ID_USUARIO}/${dificuldade}`,
     )
@@ -145,15 +165,15 @@
       .then(function (dados) {
         console.log("Dados gráfico:", dados);
 
+        const ctx = document
+          .getElementById("graficoRosquinha")
+          .getContext("2d");
+
+        if (graficoRosquinha) {
+          graficoRosquinha.destroy();
+        }
+
         if (dados.length == 0 || dados[0].acertos == null) {
-          const ctx = document
-            .getElementById("graficoRosquinha")
-            .getContext("2d");
-
-          if (graficoRosquinha) {
-            graficoRosquinha.destroy();
-          }
-
           graficoRosquinha = new Chart(ctx, {
             type: "doughnut",
 
@@ -163,9 +183,7 @@
               datasets: [
                 {
                   data: [1],
-
                   backgroundColor: ["#4b5563"],
-
                   borderWidth: 0,
                 },
               ],
@@ -186,21 +204,10 @@
             },
           });
 
-          document.getElementById("mensagemGrafico").innerHTML =
-            "Você ainda não realizou quizzes nessa dificuldade.";
-
           return;
         }
 
         const info = dados[0];
-
-        const ctx = document
-          .getElementById("graficoRosquinha")
-          .getContext("2d");
-
-        if (graficoRosquinha) {
-          graficoRosquinha.destroy();
-        }
 
         graficoRosquinha = new Chart(ctx, {
           type: "doughnut",
@@ -213,13 +220,51 @@
                 data: [info.acertos || 0, info.erros || 0],
 
                 backgroundColor: ["#0d3d91", "#ff7b00"],
+
                 borderColor: ["#081f4d", "#c35f01"],
+
                 borderWidth: 3,
                 hoverOffset: 10,
               },
             ],
           },
+
+          options: {
+            plugins: {
+              legend: {
+                labels: {
+                  color: "white",
+                },
+              },
+            },
+          },
         });
+      });
+  }
+
+  function atualizarBotaoResultado(dificuldade) {
+    const botao = document.querySelector(".btn_dash_resultado");
+
+    if (dificuldade == "geral") {
+      botao.disabled = false;
+      botao.classList.remove("btn_desabilitado");
+
+      return;
+    }
+
+    fetch(
+      `/dashboard/acertos-erros/${sessionStorage.ID_USUARIO}/${dificuldade}`,
+    )
+      .then((res) => res.json())
+
+      .then((dados) => {
+        if (dados.length == 0 || dados[0].acertos == null) {
+          botao.disabled = true;
+          botao.classList.add("btn_desabilitado");
+        } else {
+          botao.disabled = false;
+          botao.classList.remove("btn_desabilitado");
+        }
       });
   }
 
@@ -227,12 +272,13 @@
 
   fetch(`/dashboard/categoriaDestaque/${sessionStorage.ID_USUARIO}`)
     .then((res) => res.json())
+
     .then((dados) => {
       const labels = [];
       const valores = [];
-
       for (let i = 0; i < dados.length; i++) {
         labels.push(dados[i].nome_categoria.toUpperCase());
+
         valores.push(dados[i].aproveitamento);
       }
 
@@ -240,10 +286,8 @@
 
       new Chart(ctx, {
         type: "bar",
-
         data: {
           labels: labels,
-
           datasets: [
             {
               label: "Aproveitamento (%)",
@@ -252,13 +296,128 @@
             },
           ],
         },
-
         options: {
           indexAxis: "y",
-          titleColor: "white",
+          plugins: {
+            legend: {
+              labels: {
+                color: "white",
+              },
+            },
+          },
+          scales: {
+            x: {
+              ticks: {
+                color: "white",
+              },
+            },
+
+            y: {
+              ticks: {
+                color: "white",
+              },
+            },
+          },
         },
       });
     });
+
+  function abrirModalResultado(event) {
+    event.preventDefault();
+
+    if (dificuldadeAtual == "geral") {
+      window.location = "./dashboard_geral.html";
+      return;
+    }
+
+    fetch(
+      `/dashboard/analisarResultado/${sessionStorage.ID_USUARIO}/${dificuldadeAtual}`,
+    )
+      .then(function (resposta) {
+        return resposta.json();
+      })
+
+      .then(function (dados) {
+        if (dados.length == 0) {
+          return;
+        }
+
+        document.getElementById("modalResultado").style.display = "flex";
+
+        let html = "";
+
+        for (let i = 0; i < dados.length; i++) {
+          const pergunta = dados[i];
+
+          let textoRespostaUsuario = "";
+          let textoRespostaCorreta = "";
+
+          if (pergunta.resposta_marcada == "A") {
+            textoRespostaUsuario = pergunta.alternativa_a;
+          } else if (pergunta.resposta_marcada == "B") {
+            textoRespostaUsuario = pergunta.alternativa_b;
+          } else if (pergunta.resposta_marcada == "C") {
+            textoRespostaUsuario = pergunta.alternativa_c;
+          } else if (pergunta.resposta_marcada == "D") {
+            textoRespostaUsuario = pergunta.alternativa_d;
+          } else {
+            textoRespostaUsuario = pergunta.alternativa_e;
+          }
+
+          if (pergunta.alternativa_correta == "A") {
+            textoRespostaCorreta = pergunta.alternativa_a;
+          } else if (pergunta.alternativa_correta == "B") {
+            textoRespostaCorreta = pergunta.alternativa_b;
+          } else if (pergunta.alternativa_correta == "C") {
+            textoRespostaCorreta = pergunta.alternativa_c;
+          } else if (pergunta.alternativa_correta == "D") {
+            textoRespostaCorreta = pergunta.alternativa_d;
+          } else {
+            textoRespostaCorreta = pergunta.alternativa_e;
+          }
+
+          html += `
+          <div class="card_resultado ${pergunta.acertou ? "acertou" : "errou"}">
+            <h3>
+              ${i + 1}) ${pergunta.pergunta}
+            </h3>
+            <p>
+              <strong>Sua resposta:</strong>
+              ${textoRespostaUsuario}
+            </p>
+            <p>
+              <strong>Resposta correta:</strong>
+              ${textoRespostaCorreta}
+            </p>
+            <p class="status_resultado ${
+              pergunta.acertou ? "status_acerto" : "status_erro"
+            }">
+              ${
+                pergunta.acertou
+                  ? "Você acertou essa pergunta."
+                  : "Você errou essa pergunta."
+              }
+            </p>
+          </div>
+        `;
+        }
+        document.getElementById("lista_resultados").innerHTML = html;
+      })
+      .catch(function (erro) {
+        console.log("Erro:", erro);
+      });
+  }
+
+  function fecharModalResultado() {
+    document.getElementById("modalResultado").style.display = "none";
+  }
+
+  window.onclick = function (event) {
+    const modal = document.getElementById("modalResultado");
+    if (event.target == modal) {
+      fecharModalResultado();
+    }
+  };
 
   function exibirAquario(idAquario) {
     let todosOsGraficos = JSON.parse(sessionStorage.AQUARIOS);
