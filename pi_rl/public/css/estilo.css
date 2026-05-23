@@ -1335,3 +1335,114 @@ nav ul li a:hover {
   gap: 25px;
   margin-bottom: 25px;
 }
+
+.modal_resultado {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal_conteudo {
+  width: 85%;
+  max-width: 1200px;
+  height: 85vh;
+  overflow-y: auto;
+  padding: 30px;
+  border-radius: 25px;
+}
+
+.top_modal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.top_modal h2 {
+  color: white;
+  font-size: 32px;
+}
+
+.top_modal button {
+  width: 45px;
+  height: 45px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  background: none;
+  color: white;
+  cursor: pointer;
+  font-size: 28px;
+}
+
+.card_resultado {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 25px;
+  margin-bottom: 20px;
+}
+
+.card_resultado h3 {
+  color: white;
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.card_resultado p {
+  color: #d6d6d6;
+  margin-bottom: 10px;
+  line-height: 1.5;
+}
+
+.acertou {
+  border-left: 6px solid #22c55e;
+}
+
+.errou {
+  border-left: 6px solid #ef4444;
+}
+
+.status_resultado {
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+.status_acerto {
+  color: #22c55e;
+}
+
+.status_erro {
+  color: #ef4444;
+}
+
+#modal_resulta{
+  display: flex;
+}
+
+.modal_conteudo::-webkit-scrollbar {
+  width: 10px;
+}
+
+.modal_conteudo::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+
+  border-radius: 20px;
+}
+
+.modal_conteudo::-webkit-scrollbar-thumb {
+  background: #6b6f78;
+  border-radius: 20px;
+}
+
+.modal_conteudo::-webkit-scrollbar-thumb:hover {
+  background: #abaeb6;
+}

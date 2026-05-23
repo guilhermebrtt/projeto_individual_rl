@@ -46,8 +46,22 @@ function buscarCategoriaDestaque(req, res) {
     });
 }
 
+function analisarResultado(req, res) {
+  const idUsuario = req.params.idUsuario;
+  dashboardModel
+    .analisarResultado(idUsuario)
+    .then(function (resultado) {
+      res.json(resultado);
+    })
+    .catch(function (erro) {
+      console.log(erro);
+      res.status(500).json(erro.sqlMessage);
+    });
+}
+
 module.exports = {
   buscarKpis,
   buscarAcertosErros,
   buscarCategoriaDestaque,
+  analisarResultado,
 };

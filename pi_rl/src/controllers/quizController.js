@@ -22,6 +22,7 @@ function finalizarQuiz(req, res) {
   const erros = req.body.errosServer;
   const tempo = req.body.tempoServer;
   const respostas = req.body.respostasServer;
+  const dificuldade = req.body.dificuldadeServer;
 
   if (
     idUsuario == undefined ||
@@ -29,14 +30,22 @@ function finalizarQuiz(req, res) {
     acertos == undefined ||
     erros == undefined ||
     tempo == undefined ||
-    respostas == undefined
+    respostas == undefined ||
+    dificuldade == undefined
   ) {
     res.status(400).send("Dados undefined");
     return;
   }
 
   quizModel
-    .cadastrarTentativa(idUsuario, pontuacao, acertos, erros, tempo)
+    .cadastrarTentativa(
+      idUsuario,
+      pontuacao,
+      acertos,
+      erros,
+      tempo,
+      dificuldade,
+    )
 
     .then(function (resultadoTentativa) {
       const idTentativa = resultadoTentativa.insertId;

@@ -69,17 +69,25 @@ function buscarAcertosErros(idUsuario, dificuldade) {
       SELECT
         SUM(qtd_acertos) AS acertos,
         SUM(qtd_erros) AS erros
+
       FROM tentativa_quiz
+
       WHERE fk_usuario = ${idUsuario};
     `;
   } else {
     instrucaoSql = `
       SELECT
-        SUM(qtd_acertos) AS acertos,
-        SUM(qtd_erros) AS erros
+        qtd_acertos AS acertos,
+        qtd_erros AS erros
+
       FROM tentativa_quiz
-      WHERE fk_usuario = ${idUsuario}
-      AND dificuldade = '${dificuldade}';
+
+      WHERE id_tentativa = (
+        SELECT MAX(id_tentativa)
+        FROM tentativa_quiz
+        WHERE fk_usuario = ${idUsuario}
+        AND dificuldade = '${dificuldade}'
+);
     `;
   }
 
@@ -120,8 +128,33 @@ function buscarCategoriaDestaque(idUsuario) {
   return database.executar(instrucaoSql);
 }
 
+function analisarResultado(idUsuario) {
+  const instrucaoSql = `
+    SELECT
+      p.pergunta,
+      ru.resposta_marcada,
+      p.alternativa_correta,
+      ru.acertou
+
+    FROM resposta_usuario ru
+
+    INNER JOIN pergunta p
+    ON ru.fk_pergunta = p.id_pergunta
+
+    INNER JOIN tentativa_quiz tq
+    ON ru.fk_tentativa = tq.id_tentativa
+
+    WHERE tq.fk_usuario = ${idUsuario}
+
+    ORDER BY ru.id_resposta DESC;
+  `;
+
+  return database.executar(instrucaoSql);
+}
+
 module.exports = {
   buscarKpis,
   buscarAcertosErros,
   buscarCategoriaDestaque,
+  analisarResultado,
 };

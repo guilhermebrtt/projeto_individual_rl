@@ -1,103 +1,108 @@
 <!doctype html>
 <html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard</title>
+    <script src="../js/sessao.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../css/estilo.css" />
+    <link rel="icon" href="../assets/imgs/logo.png" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+  </head>
 
-  <script src="../js/sessao.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link rel="stylesheet" href="../css/estilo.css" />
-  <link rel="icon" href="../assets/imgs/logo.png" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" />
-</head>
-
-<body class="body_dashboard">
-  <div class="header">
-    <div class="container">
-      <a href="../index.html"><img class="logo" src="../assets/imgs/logo.png" alt="Logo do Rocket League" /></a>
-      <nav>
-        <ul>
-          <li>
-            <a href="../index.html">Home</a>
-          </li>
-          <li><a href="../conteudo.html">Conteúdo</a></li>
-          <li><a href="../homequiz.html">Quiz</a></li>
-          <li><a href="../index.html" onclick="sair()">Sair</a></li>
-        </ul>
-      </nav>
-    </div>
-  </div>
-  <div class="dashboard">
-    <div class="top_dashboard_actions">
-      <a href="./dashboard_geral.html">
-        <button class="btn_dash_geral">Dashboard Geral</button>
-      </a>
-    </div>
-    <div class="header_dash">
-      <div class="welcome glass">
-
-        <h1>Bem-vindo de volta, <span id="nome_usuario">Jogador</span></h1>
-
-        <p>
-          Confira suas estatísticas, desempenho nos quizzes e evolução
-          dentro da plataforma.
-        </p>
+  <body class="body_dashboard">
+    <div class="header">
+      <div class="container">
+        <a href="../index.html"
+          ><img
+            class="logo"
+            src="../assets/imgs/logo.png"
+            alt="Logo do Rocket League"
+        /></a>
+        <nav>
+          <ul>
+            <li>
+              <a href="../index.html">Home</a>
+            </li>
+            <li><a href="../conteudo.html">Conteúdo</a></li>
+            <li><a href="../homequiz.html">Quiz</a></li>
+            <li><a href="../index.html" onclick="sair()">Sair</a></li>
+          </ul>
+        </nav>
       </div>
-      <div class="filtro_dashboard glass">
-        <h3>Filtrar por dificuldade</h3>
-        <div class="botoes_filtro">
-          <button onclick="filtrarDashboard('facil')">Fácil</button>
-          <button onclick="filtrarDashboard('medio')">Médio</button>
-          <button onclick="filtrarDashboard('dificil')">Difícil</button>
-          <button onclick="filtrarDashboard('geral')">Geral</button>
+    </div>
+    <div class="dashboard">
+      <div class="top_dashboard_actions">
+        <a href="./dashboard_geral.html">
+          <button class="btn_dash_geral">Dashboard Geral</button>
+        </a>
+      </div>
+      <div class="header_dash">
+        <div class="welcome glass">
+          <h1>Bem-vindo de volta, <span id="nome_usuario">Jogador</span></h1>
+
+          <p>
+            Confira suas estatísticas, desempenho nos quizzes e evolução dentro
+            da plataforma.
+          </p>
+        </div>
+        <div class="filtro_dashboard glass">
+          <h3>Filtrar por dificuldade</h3>
+          <div class="botoes_filtro">
+            <button onclick="filtrarDashboard('facil')">Fácil</button>
+            <button onclick="filtrarDashboard('medio')">Médio</button>
+            <button onclick="filtrarDashboard('dificil')">Difícil</button>
+            <button onclick="filtrarDashboard('geral')">Geral</button>
+          </div>
+        </div>
+      </div>
+      <section class="kpis_dashboard">
+        <div class="kpi_card glass">
+          <h3>Quizzes Realizados</h3>
+          <span id="kpi_quizzes">0</span>
+        </div>
+
+        <div class="kpi_card glass">
+          <h3>Aproveitamento</h3>
+          <span id="kpi_aproveitamento">0%</span>
+        </div>
+
+        <div class="kpi_card glass">
+          <h3>Melhor Pontuação</h3>
+          <span id="kpi_melhor_pontuacao">0</span>
+        </div>
+
+        <div class="kpi_card glass">
+          <h3>Tempo Médio</h3>
+          <span id="kpi_tempo">0m 0s</span>
+        </div>
+      </section>
+      <div class="dash_grafico">
+        <div class="grafico_card glass">
+          <h3>Acertos vs Erros</h3>
+          <canvas id="graficoRosquinha"></canvas>
+          <div class="top_dashboard_actions">
+            <a href="">
+              <button type="button" class="btn_dash_resultado">
+                Analisar Resultado
+              </button>
+            </a>
+          </div>
+        </div>
+        <div class="grafico_card glass">
+          <h3>Desempenho por Categoria</h3>
+          <canvas id="graficoCategorias"></canvas>
         </div>
       </div>
     </div>
-    <section class="kpis_dashboard">
-      <div class="kpi_card glass">
-        <h3>Quizzes Realizados</h3>
-        <span id="kpi_quizzes">0</span>
-      </div>
-
-      <div class="kpi_card glass">
-        <h3>Aproveitamento</h3>
-        <span id="kpi_aproveitamento">0%</span>
-      </div>
-
-      <div class="kpi_card glass">
-        <h3>Melhor Pontuação</h3>
-        <span id="kpi_melhor_pontuacao">0</span>
-      </div>
-
-      <div class="kpi_card glass">
-        <h3>Tempo Médio</h3>
-        <span id="kpi_tempo">0m 0s</span>
-      </div>
-    </section>
-    <div class="dash_grafico">
-      <div class="grafico_card glass">
-        <h3>Acertos vs Erros</h3>
-        <canvas id="graficoRosquinha"></canvas>
-        <div class="top_dashboard_actions">
-          <a href="">
-            <button class="btn_dash_resultado">Analisar Resultado</button>
-          </a>
-        </div>
-      </div>
-      <div class="grafico_card glass">
-        <h3>Desempenho por Categoria</h3>
-        <canvas id="graficoCategorias"></canvas>
-      </div>
-    </div>
-  </div>
-</body>
-
+  </body>
 </html>
 
 <script>
   nome_usuario.innerHTML = sessionStorage.NOME_USUARIO;
+  let graficoRosquinha;
 
   function sair() {
     sessionStorage.clear();
@@ -129,52 +134,105 @@
       .catch(function (erro) {
         console.log("Erro:", erro);
       });
+
+    fetch(
+      `/dashboard/acertos-erros/${sessionStorage.ID_USUARIO}/${dificuldade}`,
+    )
+      .then(function (resposta) {
+        return resposta.json();
+      })
+
+      .then(function (dados) {
+        console.log("Dados gráfico:", dados);
+
+        if (dados.length == 0 || dados[0].acertos == null) {
+          const ctx = document
+            .getElementById("graficoRosquinha")
+            .getContext("2d");
+
+          if (graficoRosquinha) {
+            graficoRosquinha.destroy();
+          }
+
+          graficoRosquinha = new Chart(ctx, {
+            type: "doughnut",
+
+            data: {
+              labels: ["Sem Tentativas"],
+
+              datasets: [
+                {
+                  data: [1],
+
+                  backgroundColor: ["#4b5563"],
+
+                  borderWidth: 0,
+                },
+              ],
+            },
+
+            options: {
+              plugins: {
+                legend: {
+                  labels: {
+                    color: "white",
+                  },
+                },
+
+                tooltip: {
+                  enabled: false,
+                },
+              },
+            },
+          });
+
+          document.getElementById("mensagemGrafico").innerHTML =
+            "Você ainda não realizou quizzes nessa dificuldade.";
+
+          return;
+        }
+
+        const info = dados[0];
+
+        const ctx = document
+          .getElementById("graficoRosquinha")
+          .getContext("2d");
+
+        if (graficoRosquinha) {
+          graficoRosquinha.destroy();
+        }
+
+        graficoRosquinha = new Chart(ctx, {
+          type: "doughnut",
+
+          data: {
+            labels: ["Acertos", "Erros"],
+
+            datasets: [
+              {
+                data: [info.acertos || 0, info.erros || 0],
+
+                backgroundColor: ["#0d3d91", "#ff7b00"],
+                borderColor: ["#081f4d", "#c35f01"],
+                borderWidth: 3,
+                hoverOffset: 10,
+              },
+            ],
+          },
+        });
+      });
   }
 
   filtrarDashboard("geral");
 
-  fetch(`/dashboard/acertos-erros/${sessionStorage.ID_USUARIO}/geral`)
-    .then(function (resposta) {
-      return resposta.json();
-    })
-    .then(function (dados) {
-      console.log(dados);
-      const info = dados[0];
-
-      const ctx = document.getElementById("graficoRosquinha");
-
-      new Chart(ctx, {
-        type: "doughnut",
-
-        data: {
-          labels: ["Acertos", "Erros"],
-
-          datasets: [
-            {
-              data: [info.acertos, info.erros],
-
-              backgroundColor: ["#0d3d91", "#ff7b00"],
-              borderColor: ["#081f4d", "#c35f01"],
-              borderWidth: 3,
-              hoverOffset: 10,
-            },
-          ],
-          oprtions: {
-            titleColor: "white"
-          }
-        },
-      });
-    });
-
   fetch(`/dashboard/categoriaDestaque/${sessionStorage.ID_USUARIO}`)
-    .then(res => res.json())
-    .then(dados => {
-
+    .then((res) => res.json())
+    .then((dados) => {
       const labels = [];
       const valores = [];
 
       for (let i = 0; i < dados.length; i++) {
-        labels.push((dados[i].nome_categoria.toUpperCase()));
+        labels.push(dados[i].nome_categoria.toUpperCase());
         valores.push(dados[i].aproveitamento);
       }
 
@@ -186,20 +244,21 @@
         data: {
           labels: labels,
 
-          datasets: [{
-            label: "Aproveitamento (%)",
-            data: valores,
-            borderRadius: 10,
-          }]
+          datasets: [
+            {
+              label: "Aproveitamento (%)",
+              data: valores,
+              borderRadius: 10,
+            },
+          ],
         },
 
         options: {
-          indexAxis: 'y',
-          titleColor:"white"
-        }
+          indexAxis: "y",
+          titleColor: "white",
+        },
       });
     });
-
 
   function exibirAquario(idAquario) {
     let todosOsGraficos = JSON.parse(sessionStorage.AQUARIOS);
