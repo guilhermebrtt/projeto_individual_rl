@@ -80,7 +80,7 @@
         </div>
       </section>
       <div class="dash_grafico">
-        <div class="grafico_card glass">
+        <div class="grafico_card_1 glass">
           <h3>Acertos vs Erros</h3>
           <canvas id="graficoRosquinha"></canvas>
           <div class="top_dashboard_actions">
@@ -95,7 +95,7 @@
             </a>
           </div>
         </div>
-        <div class="grafico_card glass">
+        <div class="grafico_card_2 glass">
           <h3>Desempenho por Categoria</h3>
           <canvas id="graficoCategorias"></canvas>
         </div>
@@ -286,39 +286,120 @@
 
       const ctx = document.getElementById("graficoCategorias");
 
+      const gradient = ctx.getContext("2d").createLinearGradient(0, 0, 600, 0);
+
+      gradient.addColorStop(0, "#2563eb");
+      gradient.addColorStop(1, "#60a5fa");
+
       new Chart(ctx, {
         type: "bar",
+
         data: {
           labels: labels,
+
           datasets: [
             {
               label: "Aproveitamento (%)",
+
               data: valores,
-              borderRadius: 10,
+
+              backgroundColor: gradient,
+
+              borderRadius: 12,
+
+              borderSkipped: false,
+
+              barThickness: 28,
+
+              hoverBackgroundColor: "#93c5fd",
             },
           ],
         },
+
         options: {
+          responsive: true,
+
           indexAxis: "y",
+
+          maintainAspectRatio: false,
+
+          layout: {
+            padding: {
+              top: 10,
+              bottom: 10,
+              left: 10,
+              right: 25,
+            },
+          },
+
           plugins: {
             legend: {
-              labels: {
-                color: "white",
+              display: false,
+            },
+
+            tooltip: {
+              backgroundColor: "#111827",
+
+              titleColor: "#fff",
+
+              bodyColor: "#fff",
+
+              borderColor: "#2563eb",
+
+              borderWidth: 1,
+
+              padding: 12,
+
+              callbacks: {
+                label: function (context) {
+                  return context.raw + "% de aproveitamento";
+                },
               },
             },
           },
+
           scales: {
             x: {
+              beginAtZero: true,
+
+              max: 100,
+
+              grid: {
+                color: "rgba(255,255,255,0.08)",
+              },
+
               ticks: {
-                color: "white",
+                color: "#cbd5e1",
+
+                callback: function (value) {
+                  return value + "%";
+                },
+
+                font: {
+                  size: 12,
+                },
               },
             },
 
             y: {
+              grid: {
+                display: false,
+              },
+
               ticks: {
-                color: "white",
+                color: "#ffffff",
+
+                font: {
+                  size: 13,
+                  weight: "bold",
+                },
               },
             },
+          },
+
+          animation: {
+            duration: 1200,
+            easing: "easeOutQuart",
           },
         },
       });

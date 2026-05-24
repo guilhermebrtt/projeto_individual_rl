@@ -1220,7 +1220,6 @@ nav ul li a:hover {
 .btn_dash_resultado {
   padding: 12px 24px;
   margin-top: -20px;
-  margin-right: -180px;
   border: none;
   border-radius: 14px;
   background: linear-gradient(135deg, #0a2c6a, #0353a4);
@@ -1288,15 +1287,33 @@ nav ul li a:hover {
   align-items: stretch;
   flex-wrap: wrap;
 }
-
-.grafico_card {
-  flex: 1;
-  max-width: 440px;
-  padding: 25px 200px;
-  border-radius: 20px;
+.grafico_card_1 h3{
+  text-align: center;
+  font-size: 2.4rem;
+  margin-top: -15px;
 }
 
-.grafico_card h3{
+.grafico_card_1 {
+  flex: 1;
+  min-width: 350px;
+  max-width: 450px;
+  padding: 25px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.grafico_card_2 {
+  flex: 2;
+  min-width: 500px;
+  padding: 25px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.grafico_card_2 h3{
   text-align: center;
   font-size: 2.4rem;
   margin-top: -15px;
@@ -1335,6 +1352,11 @@ nav ul li a:hover {
   justify-content: space-between;
   gap: 25px;
   margin-bottom: 25px;
+}
+
+#graficoCategorias {
+  width: 100%;
+  max-height: 500px;
 }
 
 .modal_resultado {
@@ -1403,6 +1425,7 @@ nav ul li a:hover {
   margin-bottom: 10px;
   line-height: 1.5;
 }
+
 
 .acertou {
   border-left: 6px solid #22c55e;
