@@ -34,8 +34,9 @@ function buscarAcertosErros(req, res) {
 
 function buscarCategoriaDestaque(req, res) {
   const idUsuario = req.params.idUsuario;
+  const dificuldade = req.params.dificuldade;
   dashboardModel
-    .buscarCategoriaDestaque(idUsuario)
+    .buscarCategoriaDestaque(idUsuario, dificuldade)
     .then(function (resultado) {
       console.log("Resultado Categoria Destaque:", resultado);
       res.status(200).json(resultado);

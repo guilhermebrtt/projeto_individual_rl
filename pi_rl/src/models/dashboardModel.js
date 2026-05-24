@@ -96,35 +96,69 @@ function buscarAcertosErros(idUsuario, dificuldade) {
   return database.executar(instrucaoSql);
 }
 
-function buscarCategoriaDestaque(idUsuario) {
-  const instrucaoSql = `
-    SELECT
-      c.nome_categoria,
+function buscarCategoriaDestaque(idUsuario, dificuldade) {
+  let instrucaoSql = "";
 
-      ROUND(
-        AVG(
-          CASE
-            WHEN ru.acertou = 1 THEN 100
-            ELSE 0
-          END
-        ),
-      1) AS aproveitamento
+  if (dificuldade == "geral") {
+    instrucaoSql = `
+      SELECT
+        p.categoria AS nome_categoria,
 
-    FROM resposta_usuario ru
+        ROUND(
+          AVG(
+            CASE
+              WHEN rq.acertou = 1 THEN 100
+              ELSE 0
+            END
+          ),
+          1
+        ) AS aproveitamento
 
-    INNER JOIN tentativa_quiz tq
-    ON tq.id_tentativa = ru.fk_tentativa
+      FROM resposta_quiz rq
 
-    INNER JOIN pergunta p
-    ON p.id_pergunta = ru.fk_pergunta
+      INNER JOIN pergunta p
+      ON rq.fk_pergunta = p.id_pergunta
 
-    INNER JOIN categoria c
-    ON c.id_categoria = p.fk_categoria
+      INNER JOIN tentativa_quiz tq
+      ON rq.fk_tentativa = tq.id_tentativa
 
-    WHERE tq.fk_usuario = ${idUsuario}
+      WHERE tq.fk_usuario = ${idUsuario}
 
-    GROUP BY c.nome_categoria;
-  `;
+      GROUP BY p.categoria
+
+      ORDER BY aproveitamento DESC;
+    `;
+  } else {
+    instrucaoSql = `
+      SELECT
+        p.categoria AS nome_categoria,
+
+        ROUND(
+          AVG(
+            CASE
+              WHEN rq.acertou = 1 THEN 100
+              ELSE 0
+            END
+          ),
+          1
+        ) AS aproveitamento
+
+      FROM resposta_quiz rq
+
+      INNER JOIN pergunta p
+      ON rq.fk_pergunta = p.id_pergunta
+
+      INNER JOIN tentativa_quiz tq
+      ON rq.fk_tentativa = tq.id_tentativa
+
+      WHERE tq.fk_usuario = ${idUsuario}
+      AND tq.dificuldade = '${dificuldade}'
+
+      GROUP BY p.categoria
+
+      ORDER BY aproveitamento DESC;
+    `;
+  }
   return database.executar(instrucaoSql);
 }
 
