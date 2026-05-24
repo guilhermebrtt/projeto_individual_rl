@@ -84,7 +84,7 @@
           <h3>Acertos vs Erros</h3>
           <canvas id="graficoRosquinha"></canvas>
           <div class="top_dashboard_actions">
-            <a href="">
+            <a id="link_analise" href="">
               <button
                 type="button"
                 class="btn_dash_resultado"
@@ -293,36 +293,24 @@
 
       new Chart(ctx, {
         type: "bar",
-
         data: {
           labels: labels,
-
           datasets: [
             {
               label: "Aproveitamento (%)",
-
               data: valores,
-
               backgroundColor: gradient,
-
               borderRadius: 12,
-
               borderSkipped: false,
-
               barThickness: 28,
-
               hoverBackgroundColor: "#93c5fd",
             },
           ],
         },
-
         options: {
           responsive: true,
-
           indexAxis: "y",
-
           maintainAspectRatio: false,
-
           layout: {
             padding: {
               top: 10,
@@ -331,25 +319,17 @@
               right: 25,
             },
           },
-
           plugins: {
             legend: {
               display: false,
             },
-
             tooltip: {
               backgroundColor: "#111827",
-
               titleColor: "#fff",
-
               bodyColor: "#fff",
-
               borderColor: "#2563eb",
-
               borderWidth: 1,
-
               padding: 12,
-
               callbacks: {
                 label: function (context) {
                   return context.raw + "% de aproveitamento";
@@ -361,34 +341,26 @@
           scales: {
             x: {
               beginAtZero: true,
-
               max: 100,
-
               grid: {
                 color: "rgba(255,255,255,0.08)",
               },
-
               ticks: {
                 color: "#cbd5e1",
-
                 callback: function (value) {
                   return value + "%";
                 },
-
                 font: {
                   size: 12,
                 },
               },
             },
-
             y: {
               grid: {
                 display: false,
               },
-
               ticks: {
                 color: "#ffffff",
-
                 font: {
                   size: 13,
                   weight: "bold",
@@ -405,11 +377,19 @@
       });
     });
 
+  const btnAnalise = document.querySelector(".btn_dash_resultado");
+
+  if (dificuldade == "geral") {
+    btnAnalise.textContent = "Análise Geral";
+  } else {
+    btnAnalise.textContent = "Analisar Resultado";
+  }
+
   function abrirModalResultado(event) {
     event.preventDefault();
 
     if (dificuldadeAtual == "geral") {
-      window.location = "./dashboard_geral.html";
+      window.location.href = "./dashboard_geral.html";
       return;
     }
 
