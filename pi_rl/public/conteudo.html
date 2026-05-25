@@ -29,7 +29,8 @@
             <li>
               <b><a href="./conteudo.html">Conteúdo</a></b>
             </li>
-            <li><a id="link_header" href="./login.html">Entrar</a></li>
+            <li id="possivel_quiz"></li>
+            <li><a id="link_header" onclick="finalizarSessao()" href="./index.html">Entrar</a></li>
           </ul>
         </nav>
       </div>
@@ -381,10 +382,16 @@
     }
 
     const linkHeader = document.getElementById("link_header");
+    const possivel_quiz = document.getElementById("possivel_quiz")
+
+    function finalizarSessao(){
+      sessionStorage.clear()
+    }
 
     if (sessionStorage.ID_USUARIO) {
-      linkHeader.innerHTML = "Quiz";
-      linkHeader.href = "./homequiz.html";
+      linkHeader.innerHTML = "Sair";
+      possivel_quiz.innerHTML = "<a id='quiz_home_header' href='./homequiz.html'>Quiz</a>";
+      possivel_quiz.href = "./homequiz.html";
     } else {
       linkHeader.innerHTML = "Entrar";
       linkHeader.href = "./login.html";

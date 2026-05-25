@@ -312,6 +312,14 @@ nav ul li a:hover {
     0 0 30px rgba(0,174,255,0.35);
 }
 
+#link_header{
+  margin-left: -30px;
+}
+
+#quiz_home_header{
+  margin-right: 30px;
+}
+
 .next_page:hover{
     transform:
     translateY(-6px)
@@ -484,6 +492,10 @@ nav ul li a:hover {
     margin-top: 15px;
     color: #ffffff;
     font-weight: bold;
+}
+
+#contenudo_header{
+  margin-right: 30px;
 }
 
 .box1_content{
@@ -704,7 +716,7 @@ nav ul li a:hover {
     background-position: center;
     background-repeat: no-repeat;
 
-    min-height: 92.4vh;
+    min-height: 93vh;
 
     display: flex;
     justify-content: center;
@@ -1110,7 +1122,7 @@ nav ul li a:hover {
 }
 .header_dash{
   width: 100%;
-  margin-top: -70px;
+  margin-top: 25px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
