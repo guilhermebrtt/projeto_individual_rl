@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
+
+  <script src="../js/sessao.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="../css/estilo.css" />
+  <link rel="icon" href="../assets/imgs/logo.png" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+</head>
+
+<body class="body_dashboard">
+  <div class="header">
+    <div class="container">
+      <a href="../index.html"><img class="logo" src="../assets/imgs/logo.png" alt="Logo do Rocket League" /></a>
+      <nav>
+        <ul>
+          <li>
+            <a href="../index.html">Home</a>
+          </li>
+          <li><a href="../conteudo.html">Conteúdo</a></li>
+          <li><a href="../homequiz.html">Quiz</a></li>
+          <li><a href="../index.html" onclick="sair()">Sair</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  <div class="dashboard">
+    <div class="top_dashboard_actions">
+      <a href="./dashboard_geral.html">
+        <button class="btn_dash_geral">Dashboard Geral</button>
+      </a>
+    </div>
+    <div class="header_dash">
+      <div class="welcome glass">
+        <h1>Bem-vindo de volta, <span id="nome_usuario">Jogador</span></h1>
+
+        <p>
+          Confira suas estatísticas, desempenho nos quizzes e evolução dentro
+          da plataforma.
+        </p>
+      </div>
+      <div class="filtro_dashboard glass">
+        <h3>Filtrar por dificuldade</h3>
+        <div class="botoes_filtro">
+          <button onclick="filtrarDashboard('facil')">Fácil</button>
+          <button onclick="filtrarDashboard('medio')">Médio</button>
+          <button onclick="filtrarDashboard('dificil')">Difícil</button>
+          <button onclick="filtrarDashboard('geral')">Geral</button>
+        </div>
+      </div>
+    </div>
+    <section class="kpis_dashboard">
+      <div class="kpi_card glass">
+        <h3>Quizzes Realizados</h3>
+        <span id="kpi_quizzes">0</span>
+      </div>
+
+      <div class="kpi_card glass">
+        <h3>Aproveitamento</h3>
+        <span id="kpi_aproveitamento">0%</span>
+      </div>
+
+      <div class="kpi_card glass">
+        <h3>Melhor Pontuação</h3>
+        <span id="kpi_melhor_pontuacao">0</span>
+      </div>
+
+      <div class="kpi_card glass">
+        <h3>Tempo Médio</h3>
+        <span id="kpi_tempo">0m 0s</span>
+      </div>
+    </section>
+    <div class="dash_grafico">
+      <div class="grafico_card_1 glass">
+        <h3>Acertos vs Erros</h3>
+        <canvas id="graficoRosquinha"></canvas>
+        <div class="top_dashboard_actions">
+          <a id="link_analise" href="">
+            <button id="btn_analisar" type="button" class="btn_dash_resultado" onclick="abrirModalResultado(event)">
+              Analisar Resultado
+            </button>
+          </a>
+        </div>
+      </div>
+      <div class="grafico_card_2 glass">
+        <h3>Desempenho por Categoria</h3>
+        <canvas id="graficoCategorias"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalResultado" class="modal_resultado">
+    <div class="modal_conteudo glass">
+      <div class="top_modal">
+        <h2>Análise do Quiz</h2>
+
+        <button onclick="fecharModalResultado()">✖</button>
+      </div>
+
+      <div id="lista_resultados"></div>
+    </div>
+  </div>
+</body>
+
+</html>
+
+<script>
+  nome_usuario.innerHTML = sessionStorage.NOME_USUARIO;
+
+  let dificuldadeAtual = "geral";
+  let graficoRosquinha = null;
+
+  function sair() {
+    sessionStorage.clear();
+  }
+
+  function filtrarDashboard(dificuldade) {
+
+    if (dificuldadeAtual == "geral") {
+      btn_analisar.style.display = 'none'
+    }
+
+    dificuldadeAtual = dificuldade;
+
+    console.log("Filtro selecionado:", dificuldade);
+
+    fetch(`/dashboard/kpis/${sessionStorage.ID_USUARIO}/${dificuldade}`)
+      .then(function (resposta) {
+        if (!resposta.ok) {
+          throw new Error("Erro ao buscar dados");
+        }
+        return resposta.json();
+      })
+      .then(function (dados) {
+        const kpi = dados[0];
+        kpi_quizzes.innerHTML = kpi.quizzes || 0;
+        kpi_aproveitamento.innerHTML = (kpi.mediaAproveitamento || 0) + "%";
+        kpi_melhor_pontuacao.innerHTML = kpi.melhorPontuacao || 0;
+
+        let tempoTotal = Number(kpi.tempoMedio || 0);
+        let minutos = Math.floor(tempoTotal / 60);
+        let segundos = tempoTotal % 60;
+        kpi_tempo.innerHTML = `${minutos}m ${segundos}s`;
+      })
+      .catch(function (erro) {
+        console.log("Erro:", erro);
+      });
+    atualizarGraficoAcertosErros(dificuldade);
+    if (dificuldadeAtual != "geral") {
+      btn_analisar.style.display = 'block'
+    } else{
+      btn_analisar.style.display = 'none'
+    }
+    console.log("Teste dps",dificuldadeAtual)
+  }
+
+  function atualizarGraficoAcertosErros(dificuldade) {
+    fetch(
+      `/dashboard/acertos-erros/${sessionStorage.ID_USUARIO}/${dificuldade}`,
+    )
+      .then(function (resposta) {
+        return resposta.json();
+      })
+
+      .then(function (dados) {
+        console.log("Dados gráfico:", dados);
+
+        const ctx = document
+          .getElementById("graficoRosquinha")
+          .getContext("2d");
+
+        if (graficoRosquinha) {
+          graficoRosquinha.destroy();
+        }
+
+        if (dados.length == 0 || dados[0].acertos == null) {
+          graficoRosquinha = new Chart(ctx, {
+            type: "doughnut",
+
+            data: {
+              labels: ["Sem Tentativas"],
+
+              datasets: [
+                {
+                  data: [1],
+                  backgroundColor: ["#4b5563"],
+                  borderWidth: 0,
+                },
+              ],
+            },
+
+            options: {
+              plugins: {
+                legend: {
+                  labels: {
+                    color: "white",
+                  },
+                },
+
+                tooltip: {
+                  enabled: false,
+                },
+              },
+            },
+          });
+
+          return;
+        }
+
+        const info = dados[0];
+
+        graficoRosquinha = new Chart(ctx, {
+          type: "doughnut",
+
+          data: {
+            labels: ["Acertos", "Erros"],
+
+            datasets: [
+              {
+                data: [info.acertos || 0, info.erros || 0],
+
+                backgroundColor: ["#0d3d91", "#ff7b00"],
+
+                borderColor: ["#081f4d", "#c35f01"],
+
+                borderWidth: 3,
+                hoverOffset: 10,
+              },
+            ],
+          },
+
+          options: {
+            plugins: {
+              legend: {
+                labels: {
+                  color: "white",
+                },
+              },
+            },
+          },
+        });
+      });
+  }
+
+  filtrarDashboard("geral");
+
+  fetch(`/dashboard/categoriaDestaque/${sessionStorage.ID_USUARIO}`)
+    .then((res) => res.json())
+
+    .then((dados) => {
+      let labels = [];
+      let valores = [];
+      for (let i = 0; i < dados.length; i++) {
+        labels.push(dados[i].nome_categoria.toUpperCase());
+        valores.push(dados[i].aproveitamento);
+      }
+
+      const ctx = document.getElementById("graficoCategorias");
+
+      const gradient = ctx.getContext("2d").createLinearGradient(0, 0, 600, 0);
+
+      gradient.addColorStop(0, "#2563eb");
+      gradient.addColorStop(1, "#60a5fa");
+
+      new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: "Aproveitamento (%)",
+              data: valores,
+              backgroundColor: gradient,
+              borderRadius: 12,
+              borderSkipped: false,
+              barThickness: 28,
+              hoverBackgroundColor: "#93c5fd",
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          indexAxis: "y",
+          maintainAspectRatio: false,
+          layout: {
+            padding: {
+              top: 10,
+              bottom: 10,
+              left: 10,
+              right: 25,
+            },
+          },
+          plugins: {
+            legend: {
+              display: false,
+            },
+            tooltip: {
+              backgroundColor: "#111827",
+              titleColor: "#fff",
+              bodyColor: "#fff",
+              borderColor: "#2563eb",
+              borderWidth: 1,
+              padding: 12,
+              callbacks: {
+                label: function (context) {
+                  return context.raw + "% de aproveitamento";
+                },
+              },
+            },
+          },
+
+          scales: {
+            x: {
+              beginAtZero: true,
+              max: 100,
+              grid: {
+                color: "rgba(255,255,255,0.08)",
+              },
+              ticks: {
+                color: "#cbd5e1",
+                callback: function (value) {
+                  return value + "%";
+                },
+                font: {
+                  size: 12,
+                },
+              },
+            },
+            y: {
+              grid: {
+                display: false,
+              },
+              ticks: {
+                color: "#ffffff",
+                font: {
+                  size: 13,
+                  weight: "bold",
+                },
+              },
+            },
+          },
+
+          animation: {
+            duration: 1200,
+            easing: "easeOutQuart",
+          },
+        },
+      });
+    });
+
+  const btnAnalise = document.querySelector(".btn_dash_resultado");
+
+  window.onload = function () {
+    document.getElementById("btn_analisar").click();
+    
+  }
+
+  function abrirModalResultado(event) {
+    event.preventDefault();
+
+    if (dificuldadeAtual == "geral") {
+      btn_analisar.style.display = 'none'
+    }else{
+      btn_analisar.style.display = 'block'
+    }
+
+    fetch(
+      `/dashboard/analisarResultado/${sessionStorage.ID_USUARIO}/${dificuldadeAtual}`,
+    )
+      .then(function (resposta) {
+        return resposta.json();
+      })
+
+      .then(function (dados) {
+        if (dados.length == 0) {
+          return;
+        }
+
+        document.getElementById("modalResultado").style.display = "flex";
+
+        let html = "";
+
+        for (let i = 0; i < dados.length; i++) {
+          const pergunta = dados[i];
+
+          let textoRespostaUsuario = "";
+          let textoRespostaCorreta = "";
+
+          if (pergunta.resposta_marcada == "A") {
+            textoRespostaUsuario = pergunta.alternativa_a;
+          } else if (pergunta.resposta_marcada == "B") {
+            textoRespostaUsuario = pergunta.alternativa_b;
+          } else if (pergunta.resposta_marcada == "C") {
+            textoRespostaUsuario = pergunta.alternativa_c;
+          } else if (pergunta.resposta_marcada == "D") {
+            textoRespostaUsuario = pergunta.alternativa_d;
+          } else {
+            textoRespostaUsuario = pergunta.alternativa_e;
+          }
+
+          if (pergunta.alternativa_correta == "A") {
+            textoRespostaCorreta = pergunta.alternativa_a;
+          } else if (pergunta.alternativa_correta == "B") {
+            textoRespostaCorreta = pergunta.alternativa_b;
+          } else if (pergunta.alternativa_correta == "C") {
+            textoRespostaCorreta = pergunta.alternativa_c;
+          } else if (pergunta.alternativa_correta == "D") {
+            textoRespostaCorreta = pergunta.alternativa_d;
+          } else {
+            textoRespostaCorreta = pergunta.alternativa_e;
+          }
+
+          html += `
+          <div class="card_resultado ${pergunta.acertou ? "acertou" : "errou"}">
+            <h3>
+              ${i + 1}) ${pergunta.pergunta}
+            </h3>
+            <p>
+              <strong>Sua resposta:</strong>
+              ${textoRespostaUsuario}
+            </p>
+            <p>
+              <strong>Resposta correta:</strong>
+              ${textoRespostaCorreta}
+            </p>
+            <p class="status_resultado ${pergunta.acertou ? "status_acerto" : "status_erro"
+            }">
+              ${pergunta.acertou
+              ? "Você acertou essa pergunta."
+              : "Você errou essa pergunta."
+            }
+            </p>
+          </div>
+        `;
+        }
+        document.getElementById("lista_resultados").innerHTML = html;
+      })
+      .catch(function (erro) {
+        console.log("Erro:", erro);
+      });
+  }
+
+  function fecharModalResultado() {
+    document.getElementById("modalResultado").style.display = "none";
+  }
+
+  window.onclick = function (event) {
+    const modal = document.getElementById("modalResultado");
+    if (event.target == modal) {
+      fecharModalResultado();
+    }
+  };
+
+  function exibirAquario(idAquario) {
+    let todosOsGraficos = JSON.parse(sessionStorage.AQUARIOS);
+
+    for (i = 0; i < todosOsGraficos.length; i++) {
+      if (todosOsGraficos[i].id != idAquario) {
+        let elementoAtual = document.getElementById(
+          `grafico${todosOsGraficos[i].id}`,
+        );
+        if (elementoAtual.classList.contains("display-block")) {
+          elementoAtual.classList.remove("display-block");
+        }
+        elementoAtual.classList.add("display-none");
+
+        let btnAtual = document.getElementById(
+          `btnAquario${todosOsGraficos[i].id}`,
+        );
+        if (btnAtual.classList.contains("btn-pink")) {
+          btnAtual.classList.remove("btn-pink");
+        }
+        btnAtual.classList.add("btn-white");
+      }
+    }
+
+    // exibindo - ou não - o gráfico
+    let graficoExibir = document.getElementById(`grafico${idAquario}`);
+    graficoExibir.classList.remove("display-none");
+    graficoExibir.classList.add("display-block");
+
+    // alterando estilo do botão
+    let btnExibir = document.getElementById(`btnAquario${idAquario}`);
+    btnExibir.classList.remove("btn-white");
+    btnExibir.classList.add("btn-pink");
+  }
+
+  // O gráfico é construído com três funções:
+  // 1. obterDadosGrafico -> Traz dados do Banco de Dados para montar o gráfico da primeira vez
+  // 2. plotarGrafico -> Monta o gráfico com os dados trazidos e exibe em tela
+  // 3. atualizarGrafico -> Atualiza o gráfico, trazendo novamente dados do Banco
+
+  // Esta função *obterDadosGrafico* busca os últimos dados inseridos em tabela de medidas.
+  // para, quando carregar o gráfico da primeira vez, já trazer com vários dados.
+  // A função *obterDadosGrafico* também invoca a função *plotarGrafico*
+
+  //     Se quiser alterar a busca, ajuste as regras de negócio em src/controllers
+  //     Para ajustar o "select", ajuste o comando sql em src/models
+  function obterDadosGrafico(idAquario) {
+    alterarTitulo(idAquario);
+
+    if (proximaAtualizacao != undefined) {
+      clearTimeout(proximaAtualizacao);
+    }
+
+    fetch(`/medidas/ultimas/${idAquario}`, { cache: "no-store" })
+      .then(function (response) {
+        if (response.ok) {
+          response.json().then(function (resposta) {
+            console.log(`Dados recebidos: ${JSON.stringify(resposta)}`);
+            resposta.reverse();
+
+            plotarGrafico(resposta, idAquario);
+          });
+        } else {
+          console.error("Nenhum dado encontrado ou erro na API");
+        }
+      })
+      .catch(function (error) {
+        console.error(
+          `Erro na obtenção dos dados p/ gráfico: ${error.message}`,
+        );
+      });
+  }
+
+  // Esta função *plotarGrafico* usa os dados capturados na função anterior para criar o gráfico
+  // Configura o gráfico (cores, tipo, etc), materializa-o na página e,
+  // A função *plotarGrafico* também invoca a função *atualizarGrafico*
+  function plotarGrafico(resposta, idAquario) {
+    console.log("iniciando plotagem do gráfico...");
+
+    // Criando estrutura para plotar gráfico - labels
+    let labels = [];
+
+    // Criando estrutura para plotar gráfico - dados
+    let dados = {
+      labels: labels,
+      datasets: [
+        {
+          label: "Umidade",
+          data: [],
+          fill: false,
+          borderColor: "rgb(75, 192, 192)",
+          tension: 0.1,
+        },
+        {
+          label: "Temperatura",
+          data: [],
+          fill: false,
+          borderColor: "rgb(199, 52, 52)",
+          tension: 0.1,
+        },
+      ],
+    };
+
+    console.log("----------------------------------------------");
+    console.log(
+      'Estes dados foram recebidos pela funcao "obterDadosGrafico" e passados para "plotarGrafico":',
+    );
+    console.log(resposta);
+
+    // Inserindo valores recebidos em estrutura para plotar o gráfico
+    for (i = 0; i < resposta.length; i++) {
+      var registro = resposta[i];
+      labels.push(registro.momento_grafico);
+      dados.datasets[0].data.push(registro.umidade);
+      dados.datasets[1].data.push(registro.temperatura);
+    }
+
+    console.log("----------------------------------------------");
+    console.log("O gráfico será plotado com os respectivos valores:");
+    console.log("Labels:");
+    console.log(labels);
+    console.log("Dados:");
+    console.log(dados.datasets);
+    console.log("----------------------------------------------");
+
+    // Criando estrutura para plotar gráfico - config
+    const config = {
+      type: "line",
+      data: dados,
+    };
+
+    // Adicionando gráfico criado em div na tela
+    let myChart = new Chart(
+      document.getElementById(`myChartCanvas${idAquario}`),
+      config,
+    );
+
+    setTimeout(() => atualizarGrafico(idAquario, dados, myChart), 2000);
+  }
+
+  // Esta função *atualizarGrafico* atualiza o gráfico que foi renderizado na página,
+  // buscando a última medida inserida em tabela contendo as capturas,
+
+  //     Se quiser alterar a busca, ajuste as regras de negócio em src/controllers
+  //     Para ajustar o "select", ajuste o comando sql em src/models
+  function atualizarGrafico(idAquario, dados, myChart) {
+    fetch(`/medidas/tempo-real/${idAquario}`, { cache: "no-store" })
+      .then(function (response) {
+        if (response.ok) {
+          response.json().then(function (novoRegistro) {
+            obterdados(idAquario);
+            // alertar(novoRegistro, idAquario);
+            console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
+            console.log(`Dados atuais do gráfico:`);
+            console.log(dados);
+
+            let avisoCaptura = document.getElementById(
+              `avisoCaptura${idAquario}`,
+            );
+            avisoCaptura.innerHTML = "";
+
+            if (
+              novoRegistro[0].momento_grafico ==
+              dados.labels[dados.labels.length - 1]
+            ) {
+              console.log(
+                "---------------------------------------------------------------",
+              );
+              console.log(
+                "Como não há dados novos para captura, o gráfico não atualizará.",
+              );
+              avisoCaptura.innerHTML =
+                "<i class='fa-solid fa-triangle-exclamation'></i> Foi trazido o dado mais atual capturado pelo sensor. <br> Como não há dados novos a exibir, o gráfico não atualizará.";
+              console.log("Horário do novo dado capturado:");
+              console.log(novoRegistro[0].momento_grafico);
+              console.log("Horário do último dado capturado:");
+              console.log(dados.labels[dados.labels.length - 1]);
+              console.log(
+                "---------------------------------------------------------------",
+              );
+            } else {
+              // tirando e colocando valores no gráfico
+              dados.labels.shift(); // apagar o primeiro
+              dados.labels.push(novoRegistro[0].momento_grafico); // incluir um novo momento
+
+              dados.datasets[0].data.shift(); // apagar o primeiro de umidade
+              dados.datasets[0].data.push(novoRegistro[0].umidade); // incluir uma nova medida de umidade
+
+              dados.datasets[1].data.shift(); // apagar o primeiro de temperatura
+              dados.datasets[1].data.push(novoRegistro[0].temperatura); // incluir uma nova medida de temperatura
+
+              myChart.update();
+            }
+
+            // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
+            proximaAtualizacao = setTimeout(
+              () => atualizarGrafico(idAquario, dados, myChart),
+              2000,
+            );
+          });
+        } else {
+          console.error("Nenhum dado encontrado ou erro na API");
+          // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
+          proximaAtualizacao = setTimeout(
+            () => atualizarGrafico(idAquario, dados, myChart),
+            2000,
+          );
+        }
+      })
+      .catch(function (error) {
+        console.error(
+          `Erro na obtenção dos dados p/ gráfico: ${error.message}`,
+        );
+      });
+  }
+</script>
