@@ -1026,6 +1026,10 @@ nav ul li a:hover {
   color: white;
 }
 
+.motivo_site p{
+  font-size: 20px;
+}
+
 .texto_intro {
   font-size: 1.4rem;
   color: #60a5fa;
