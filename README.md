@@ -91,6 +91,8 @@ Depois execute todas as tabelas presentes no arquivo `.sql` do projeto.
 Crie na raiz do diretório `projeto_individual_rl\pi_rl` o arquivo de configuração do banco de dados (`.env`), adicione as credenciais:
 
 ```javascript
+AMBIENTE_PROCESSO=producao
+
 DB_HOST: localhost,
 DB_DATABASE: "rocketleague"
 DB_USER: "root",
