@@ -30,14 +30,27 @@
             </li>
             <li><a href="./conteudo.html">Conteúdo</a></li>
             <li id="possivel_quiz"></li>
-            <li><a id="link_header" onclick="finalizarSessao()" href="./index.html">Entrar</a></li>
+            <li>
+              <a
+                id="link_header"
+                onclick="finalizarSessao()"
+                href="./index.html"
+                >Entrar</a
+              >
+            </li>
           </ul>
         </nav>
       </div>
     </div>
     <div class="box1">
       <div class="header_box1">
-        <h1>Aprenda <span>Rocket League</span> do básico ao avançado</h1>
+        <h1>
+          Aprenda
+          <span
+            ><a class="link_sobre" href="./sobre.html">Rocket League</a></span
+          >
+          do básico ao avançado
+        </h1>
         <h3>Entenda o jogo, teste seu conhecimento e veja seu desempenho</h3>
       </div>
       <div class="content_box1">
@@ -97,31 +110,19 @@
         ><button class="next_page">Estou pronto!</button></a
       >
     </div>
-
-    <div class="footer">
-      <div class="container">
-        <h4>
-          Feito com amor por Guilherme Britto &hearts; SPTech RA04261009 &copy;
-          2026
-        </h4>
-        <p>
-          Venha me conhecer melhor:
-          <a href="./sobre.html" class="link_sobre">eu aqui!</a>
-        </p>
-      </div>
-    </div>
   </body>
   <script>
     const linkHeader = document.getElementById("link_header");
-    const possivel_quiz = document.getElementById("possivel_quiz")
+    const possivel_quiz = document.getElementById("possivel_quiz");
 
-    function finalizarSessao(){
-      sessionStorage.clear()
+    function finalizarSessao() {
+      sessionStorage.clear();
     }
 
     if (sessionStorage.ID_USUARIO) {
       linkHeader.innerHTML = "Sair";
-      possivel_quiz.innerHTML = "<a id='quiz_home_header' href='./homequiz.html'>Quiz</a>";
+      possivel_quiz.innerHTML =
+        "<a id='quiz_home_header' href='./homequiz.html'>Quiz</a>";
       possivel_quiz.href = "./homequiz.html";
     } else {
       linkHeader.innerHTML = "Entrar";

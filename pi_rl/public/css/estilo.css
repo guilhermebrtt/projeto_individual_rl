@@ -97,11 +97,12 @@ nav ul li a:hover {
     font-weight: 800;
 }
 
-.header_box1 h1 span{
+.header_box1 h1 span a{
     color: rgb(7, 41, 136);
     transition: 0.4s;
     text-shadow:
     0 0 20px rgba(24,77,237,0.18);
+    cursor: default; 
 }
 
 .header_box1 h1 span:hover{
@@ -1011,6 +1012,86 @@ nav ul li a:hover {
   border-radius: 25px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
+
+.motivo_site {
+  background-color: #081f4d;
+  border-radius:  30px;
+  width: 100%;
+  max-width: 90%;
+  margin: 5% auto;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 45px;
+  color: white;
+}
+
+.texto_intro {
+  font-size: 1.4rem;
+  color: #60a5fa;
+  letter-spacing: 2px;
+  font-weight: 600;
+}
+
+.motivo_site h2 {
+  font-size: 4rem;
+  line-height: 1.1;
+  max-width: 700px;
+  font-weight: 800;
+}
+
+.bloco_texto {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.bloco_texto p {
+  font-size: 1.4rem;
+  line-height: 1.8;
+  color: #d1d5db;
+  max-width: 850px;
+}
+
+.bloco_texto.destaque {
+  padding-left: 25px;
+  border-left: 3px solid #2563eb;
+}
+
+.bloco_texto.destaque p {
+  color: #f3f4f6;
+}
+
+.bloco_final {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.bloco_final p {
+  font-size: 1.3rem;
+  color: #9ca3af;
+}
+
+.bloco_final h3 {
+  font-size: 2.4rem;
+  color: white;
+  line-height: 1.4;
+}
+
+.bloco_final blockquote {
+  margin-top: 20px;
+  font-size: 3.8rem;
+  font-weight: 700;
+  color: #60a5fa;
+  line-height: 1.4;
+  border-left: 4px solid #2563eb;
+  padding-left: 25px;
+  margin-top: 10px;
+  font-style: italic;
+}
+
 .reverse {
   flex-direction: row-reverse;
 }
