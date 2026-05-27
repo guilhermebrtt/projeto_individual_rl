@@ -96,6 +96,9 @@ DB_DATABASE: "rocketleague"
 DB_USER: "root",
 DB_PASSWORD: "SUA_SENHA",
 DB_PORT: 3306
+
+APP_PORT=8080
+APP_HOST=localhost
 ```
 #### *Os valores serão preenchidos com os dados do seu banco 
 ---
