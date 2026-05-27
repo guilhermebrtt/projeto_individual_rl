@@ -33,7 +33,7 @@ pontuacao INT NOT NULL,
 qtd_acertos INT NOT NULL,
 qtd_erros INT NOT NULL,
 tempo_total INT NOT NULL,
-dificuldade VARCHAR(20),
+dificuldade VARCHAR(50),
 data_tentativa DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
 FOREIGN KEY (fk_usuario) REFERENCES usuario(id_usuario)
