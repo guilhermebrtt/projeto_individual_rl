@@ -77,6 +77,7 @@
       <div class="dash_grafico">
         <div class="grafico_card_1 glass">
           <h3>Acertos vs Erros</h3>
+          <p id="utm_tentativa">(Última tentantiva)</p>
           <canvas id="graficoRosquinha"></canvas>
           <div class="top_dashboard_actions">
             <button
@@ -114,7 +115,6 @@
   nome_usuario.innerHTML = sessionStorage.NOME_USUARIO;
 
   let dificuldadeAtual = "geral";
-  let graficoRosquinha = null;
 
   function sair() {
     sessionStorage.clear();
@@ -126,8 +126,6 @@
     }
 
     dificuldadeAtual = dificuldade;
-
-    console.log("Filtro selecionado:", dificuldade);
 
     fetch(`/dashboard/kpis/${sessionStorage.ID_USUARIO}/${dificuldade}`)
       .then(function (resposta) {
@@ -157,8 +155,9 @@
     } else {
       btn_analisar.style.display = "none";
     }
-    console.log("Teste dps", dificuldadeAtual);
   }
+
+  let graficoRosquinha = null;
 
   function atualizarGraficoAcertosErros(dificuldade) {
     fetch(
@@ -169,8 +168,6 @@
       })
 
       .then(function (dados) {
-        console.log("Dados gráfico:", dados);
-
         const ctx = document
           .getElementById("graficoRosquinha")
           .getContext("2d");
@@ -262,8 +259,6 @@
       .then((res) => res.json())
 
       .then((dados) => {
-        console.log("Dados categorias:", dados);
-
         const canvas = document.getElementById("graficoCategorias");
         const ctx = canvas.getContext("2d");
 

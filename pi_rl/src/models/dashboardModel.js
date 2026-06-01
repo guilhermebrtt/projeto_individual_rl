@@ -57,7 +57,6 @@ function buscarKpis(idUsuario, dificuldade) {
       AND p.nivel_dificuldade = '${dificuldade}';
     `;
   }
-  console.log(instrucaoSql);
   return database.executar(instrucaoSql);
 }
 
@@ -90,9 +89,6 @@ function buscarAcertosErros(idUsuario, dificuldade) {
 );
     `;
   }
-
-  console.log(instrucaoSql);
-
   return database.executar(instrucaoSql);
 }
 

@@ -1161,6 +1161,12 @@ nav ul li a:hover {
   object-fit: cover;
   border-radius: 16px;
 }
+
+.grafico_card_1 p{
+text-align: center;
+margin-top: -25px;
+}
+
 .card_objetivo {
   background: linear-gradient(135deg, #0d3d91, #081f4d);
   color: white;

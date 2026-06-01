@@ -26,7 +26,7 @@ function buscarAcertosErros(req, res) {
       res.status(200).json(resultado);
     })
     .catch(function (erro) {
-      console.log("Erro ao buscar acertos e erros:", erro);
+      console.log(erro);
 
       res.status(500).json(erro.sqlMessage);
     });
@@ -42,7 +42,7 @@ function buscarCategoriaDestaque(req, res) {
       res.status(200).json(resultado);
     })
     .catch(function (erro) {
-      console.log("Erro ao buscar categoria destaque:", erro);
+      console.log(erro);
       res.status(500).json(erro.sqlMessage);
     });
 }

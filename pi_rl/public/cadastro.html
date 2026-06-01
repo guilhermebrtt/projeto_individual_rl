@@ -112,6 +112,7 @@
       console.log("Resposta:", resposta);
       if (resposta.ok) {
         mensagem_concluido.innerHTML = "Cadastro realizado com sucesso!";
+        mensagem_erro.innerHTML = "";
         setTimeout(() => {
           window.location = "login.html";
         }, 2000);
