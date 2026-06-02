@@ -44,7 +44,7 @@
           </p>
         </div>
         <div class="filtro_dashboard glass">
-          <h3>Filtrar por dificuldade</h3>
+          <h3 id="filtro_dificuldade"></h3>
           <div class="botoes_filtro">
             <button onclick="filtrarDashboard('facil')">Fácil</button>
             <button onclick="filtrarDashboard('medio')">Médio</button>
@@ -84,7 +84,7 @@
               id="btn_analisar"
               type="button"
               class="btn_dash_resultado"
-              onclick="abrirModalResultado(event)"
+              onclick="abrirModalResultado()"
             >
               Analisar Resultado
             </button>
@@ -144,6 +144,9 @@
         let minutos = Math.floor(tempoTotal / 60);
         let segundos = tempoTotal % 60;
         kpi_tempo.innerHTML = `${minutos}m ${segundos.toFixed(0)}s`;
+
+        document.getElementById("filtro_dificuldade").innerHTML =
+          `Filtro de Dificuldade: <span> ${dificuldadeAtual.toUpperCase()} </span>`;
       })
       .catch(function (erro) {
         console.log("Erro:", erro);
@@ -157,6 +160,8 @@
     }
   }
 
+  filtrarDashboard("geral");
+
   let graficoRosquinha = null;
 
   function atualizarGraficoAcertosErros(dificuldade) {
@@ -168,9 +173,7 @@
       })
 
       .then(function (dados) {
-        const ctx = document
-          .getElementById("graficoRosquinha")
-          .getContext("2d");
+        const ctx = document.getElementById("graficoRosquinha");
 
         if (graficoRosquinha) {
           graficoRosquinha.destroy();
@@ -200,10 +203,6 @@
                   labels: {
                     color: "white",
                   },
-                },
-
-                tooltip: {
-                  enabled: false,
                 },
               },
             },
@@ -248,8 +247,6 @@
       });
   }
 
-  filtrarDashboard("geral");
-
   let graficoCategorias = null;
 
   function atualizarGraficoCategorias(dificuldade) {
@@ -272,19 +269,9 @@
 
             data: {
               labels: ["Sem dados"],
-
-              datasets: [
-                {
-                  label: "Aproveitamento (%)",
-                  data: [0],
-                  backgroundColor: "#4b5563",
-                  borderRadius: 10,
-                },
-              ],
             },
             options: {
               responsive: true,
-              maintainAspectRatio: false,
               indexAxis: "y",
 
               plugins: {
@@ -292,10 +279,9 @@
                   display: false,
                 },
               },
-
               scales: {
                 x: {
-                  beginAtZero: true,
+                  min: 0,
                   max: 100,
                   ticks: {
                     color: "white",
@@ -340,12 +326,11 @@
 
             datasets: [
               {
-                label: "Aproveitamento (%)",
                 data: valores,
                 backgroundColor: gradient,
                 borderRadius: 12,
                 borderSkipped: false,
-                barThickness: 28,
+                barThickness: 32,
                 hoverBackgroundColor: "#93c5fd",
               },
             ],
@@ -353,7 +338,6 @@
 
           options: {
             responsive: true,
-            maintainAspectRatio: false,
             indexAxis: "y",
 
             plugins: {
@@ -378,11 +362,11 @@
 
             scales: {
               x: {
-                beginAtZero: true,
+                min: 0,
                 max: 100,
 
                 ticks: {
-                  color: "#cbd5e1",
+                  color: "white",
 
                   callback: function (value) {
                     return value + "%";
@@ -409,11 +393,6 @@
                 },
               },
             },
-
-            animation: {
-              duration: 1200,
-              easing: "easeOutQuart",
-            },
           },
         });
       })
@@ -423,21 +402,7 @@
       });
   }
 
-  const btnAnalise = document.querySelector(".btn_dash_resultado");
-
-  window.onload = function () {
-    document.getElementById("btn_analisar").click();
-  };
-
-  function abrirModalResultado(event) {
-    event.preventDefault();
-
-    if (dificuldadeAtual == "geral") {
-      btn_analisar.style.display = "none";
-    } else {
-      btn_analisar.style.display = "block";
-    }
-
+  function abrirModalResultado() {
     fetch(
       `/dashboard/analisarResultado/${sessionStorage.ID_USUARIO}/${dificuldadeAtual}`,
     )

@@ -68,6 +68,10 @@ function finalizarQuiz(req, res) {
       return Promise.all(promises);
     })
 
+    .then(function () {
+      res.status(200).send("Quiz salvo com sucesso");
+    })
+
     .catch(function (erro) {
       console.log("ERRO NO BACK:");
       console.log(erro);

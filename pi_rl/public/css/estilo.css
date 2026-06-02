@@ -1228,12 +1228,15 @@ margin-top: -25px;
 }
 
 .welcome {
-  padding: 15px;
+  padding: 0px 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .welcome h1 {
   font-size: 2.0rem;
-  margin-bottom: 10px;
 }
 
 .welcome span {
@@ -1270,6 +1273,18 @@ margin-top: -25px;
 
 .kpi_card:hover {
   transform: translateY(-4px);
+}
+
+.kpi_card:hover h3{
+  transition: 0.3s;
+  color: white;
+}
+
+.kpi_card:hover span{
+  color: white;
+  transition: 0.3s;
+  text-shadow:
+    0 0 25px rgba(0,174,255,0.22);
 }
 
 .kpi_card h3 {
@@ -1350,12 +1365,14 @@ margin-top: -25px;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.15);
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
 }
 
 .filtro_dashboard h3 {
   color: white;
+  margin-top: 0px;
   font-size: 22px;
   font-weight: 600;
 }
@@ -1496,6 +1513,8 @@ margin-top: -25px;
   font-size: 32px;
 }
 
+
+
 .top_modal button {
   width: 45px;
   height: 45px;
@@ -1529,6 +1548,11 @@ margin-top: -25px;
   line-height: 1.5;
 }
 
+#filtro_dificuldade span{
+  color: #aec1f6;
+  text-shadow:
+    0 0 25px rgba(0,174,255,0.22);
+}
 
 .acertou {
   border-left: 6px solid #22c55e;
